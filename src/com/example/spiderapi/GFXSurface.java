@@ -7,8 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Matrix.ScaleToFit;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -98,6 +101,8 @@ public class GFXSurface extends Activity implements OnTouchListener
 
 		LaunchingScreenTimer = 5000;
 		CurrentGameState = EnumGameState.LaunchingScreen;
+		IsGameLoading = false;
+		BackgroundID = R.drawable.hello;
 		
 		// !!! All objects loading bitmaps need to be below this line !!!
 		//Load BackGround
@@ -262,9 +267,25 @@ public class GFXSurface extends Activity implements OnTouchListener
 		{
 			if(bitmap == null || canvas == null)
 				return;
-			
-			canvas.drawBitmap(bitmap, src, dst, null);
+					
+			//dst.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
+			//Bitmap tempBMP = Bitmap.createBitmap(bitmap, (int)src.left, (int)src.top, (int)src.right, (int)src.bottom);
+			canvas.drawBitmap(bitmap, null, dst, null);
 		}
+		
+		public void OnDraw(Canvas canvas,Bitmap bitmap, RectF src, RectF dst)
+		{
+			if(bitmap == null || canvas == null)
+				return;
+
+
+			Matrix matrix = new Matrix();
+			matrix.reset();
+			ScaleToFit stf = ScaleToFit.FILL;
+			matrix.setRectToRect(src, dst, stf);		
+
+			canvas.drawBitmap(bitmap, matrix, null);
+		}		
 		
 		public Bitmap LoadBitmap(int BitmapID)
 		{
@@ -296,16 +317,12 @@ public class GFXSurface extends Activity implements OnTouchListener
 			ThreadOne = null;
 			ThreadTwo = null;
 			
-			finish();      		//kill loading screen activity
+			finish(); //kill loading screen activity
 		}
 		
 		public void resume()
 		{
 			IsRunning = true;
-			//ThreadOne = new Thread(this);
-			//ThreadOne.start();
-			//ThreadTwo = new Thread(this);
-			//ThreadTwo.start();
 		
 			ThreadOne = new Thread(new Runnable() 
 			{
@@ -320,9 +337,11 @@ public class GFXSurface extends Activity implements OnTouchListener
 						Canvas canvas = surfHolder.lockCanvas();
 						canvas.drawRGB(0, 0, 0);
 						
+						//Displaying Shit starts from here
+						
 						if(bmpBackground != null) 
 							Surface.OnDraw(canvas, bmpBackground, 0, 0);
-							
+										
 						if(IsGameLoading != true)
 						{
 							switch(CurrentGameState)
@@ -343,8 +362,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 									
 									if(spider != null)	
 										spider.OnDraw(canvas);
-									//asdasdasd		
-									//WormBox.OnDraw(canvas);
+
 									break;
 								}
 								case InGameSpiderStat:
@@ -364,10 +382,13 @@ public class GFXSurface extends Activity implements OnTouchListener
 							}					
 	
 							ButtonMenager.OnDraw(canvas);
-							MsgMenager.OnDraw(canvas);						
+													
 						}
+						MsgMenager.OnDraw(canvas);
+						
+						//Displaying Shit ends here
 						surfHolder.unlockCanvasAndPost(canvas);
-			        	Log.i("Thread1", "Running parallely");
+			        	//Log.i("Thread1", "Running parallely");
 			        }
 			    }
 			});
@@ -422,7 +443,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 							WormMenager.OnUpdate(TimeDiff);
 				        	
 						}
-			        	Log.i("Thread2", "Running parallely");
+			        	//Log.i("Thread2", "Running parallely");
 			        }
 			    }
 			});
@@ -462,16 +483,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 				break;
 
 			default: break;
-		}
-		
-		//Zainicjuj Guziki 
-		
-		//Zainicjuj tlo
-		
-		//zainicjuj narzedzia danego stanu gry	
-		
-		//przy kazdej inicjajci kasacja dotychczasowego stanu
-		
+		}		
 		ButtonMenager.CreateButtons(CurrentGameState);
 	
 		IsGameLoading = false;

@@ -3,6 +3,7 @@ package com.example.spiderapi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 enum UnitFlag
 {
@@ -26,11 +27,13 @@ public class Animal
 	protected int AnimationTimer = 1000; //first animation
 	protected int AnimationNextTimer = 1000; // time between animation change
 	protected int MaxAnimationsDirection = 8;
-	protected int MaxAnimationFrames = 8;
-	protected Rect srcSampleAnimalBmp = new Rect(0,0,0,0);
-	protected Rect dstRectangleOnDraw = new Rect(0,0,0,0); 	
-	protected int AnimalBitmapHeight = 480;
-	protected int AnimalBitmapWidth = 640;
+	protected int MaxAnimationFrames = 2;//8;
+	protected RectF srcSampleAnimalBmp = new RectF(0,0,0,0);
+	protected RectF dstRectangleOnDraw = new RectF(0,0,0,0); 	
+	//protected Rect srcSampleAnimalBmp = new Rect(0,0,0,0);
+	//protected Rect dstRectangleOnDraw = new Rect(0,0,0,0); 	
+	protected int AnimalBitmapHeight = 520;
+	protected int AnimalBitmapWidth = 520;
 	//Flags
 	protected int MovementFlag = 0;
 	protected int UnitFlag = 0;
@@ -98,13 +101,8 @@ public class Animal
 		
 		if(bmpAnimalBitmap == null)
 			return;
-		
+	
 		GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmap, srcSampleAnimalBmp, dstRectangleOnDraw);
-		//TEST !!!
-		//HitBox
-		Bitmap bmp = GFXSurface.GetSurface().LoadBitmap(R.drawable.worm);
-		//GFXSurface.GetSurface().OnDraw(canvas, bmp, null, dstRectangleOnDraw);
-		GFXSurface.GetSurface().OnDraw(canvas, bmp, PositionX, PositionY);
 	}
 	
 	public void OnUpdate(long diff)
@@ -123,11 +121,6 @@ public class Animal
 			
 			AnimationTimer = AnimationNextTimer;
 		}AnimationTimer -= diff;
-		
-		//Set Sample of Animal bitmap to show up
-		srcSampleAnimalBmp.set(AnimationCurrentState * AnimalBitmapWidth, Orientation * AnimalBitmapHeight, AnimalBitmapWidth, AnimalBitmapHeight);
-		//scale the sample
-		dstRectangleOnDraw.set(PositionX-AnimalWidth/2, PositionY-AnimalHeight/2, PositionX+AnimalWidth/2, PositionY+AnimalHeight/2);		
 	}
 	
 	public void OnRemove()	
@@ -137,8 +130,8 @@ public class Animal
 	
 	public boolean IsOnPosition(float fOnTouchX, float fOnTouchY)
 	{
-		if( ( fOnTouchX > PositionX-(AnimalWidth/2) ) && ( fOnTouchX < PositionX + (AnimalWidth/2)) 
-				&& ( fOnTouchY > PositionY - (AnimalHeight/2) ) && ( fOnTouchY < PositionY + (AnimalHeight/2) ) )	
+		if(fOnTouchX > PositionX && fOnTouchX < (PositionX + AnimalWidth)
+				&& fOnTouchY > PositionY && fOnTouchY < (PositionY + AnimalHeight))
 				return true;
 
 	    return false;

@@ -20,12 +20,15 @@ public class Spider extends Animal
 	public Spider(int objectID)
 	{
 		ObjectID = objectID;
+		MsgMenager.AddMassage(0, "Loading Spider Bitmap");
 		this.OnCreate();
 	}	
 	
 	@Override
 	protected void OnCreate() 
 	{
+		MsgMenager.AddMassage(0, "Loading Spider Bitmap");
+		
 		super.OnCreate();
 	
 		//Initialize Variable
@@ -287,5 +290,16 @@ public class Spider extends Animal
 		this.OnEatTime(diff);
 		//Move and animations calculation Methods
 		this.OnMove(diff);
+		
+		//Set Sample of Animal bitmap to show up
+		srcSampleAnimalBmp.set(/*AnimationCurrentState*/AnimationCurrentState * AnimalBitmapWidth, /*Orientation*/0 * AnimalBitmapHeight, AnimationCurrentState * AnimalBitmapWidth + AnimalBitmapWidth, 0 * AnimalBitmapHeight + AnimalBitmapHeight);		
+	
+		int left = PositionX;
+		int top = PositionY;
+		int right =  PositionX+200;
+		int bottom =  PositionY+200;
+		
+		dstRectangleOnDraw.set(left, top, right, bottom);		
+		
 	}
 }

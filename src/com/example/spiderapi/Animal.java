@@ -2,8 +2,6 @@ package com.example.spiderapi;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.RectF;
 
 enum UnitFlag
 {
@@ -29,10 +27,6 @@ public class Animal
 	protected int AnimationNextTimer = 1000; // time between animation change
 	protected int MaxAnimationsDirection = 8;
 	protected int MaxAnimationFrames = 8;
-	//protected RectF srcSampleAnimalBmp = new RectF(0,0,0,0);
-	//protected RectF dstRectangleOnDraw = new RectF(0,0,0,0); 	
-	protected Rect srcSampleAnimalBmp = new Rect(0,0,0,0);
-	protected Rect dstRectangleOnDraw = new Rect(0,0,0,0); 	
 	protected int AnimalBitmapHeight = 520;
 	protected int AnimalBitmapWidth = 520;
 	//Flags
@@ -76,13 +70,7 @@ public class Animal
 	public int GetHealth() { return Health; }
 	
 	protected void OnCreate()
-	{
-		GetAnimalBitmapID();
-		
-		//bmpAnimalBitmap = GFXSurface.GetSurface().LoadBitmap(bmpAnimalBitmapID);
-		//AnimalBitmapHeight = bmpAnimalBitmap.getHeight();
-		//AnimalBitmapWidth = bmpAnimalBitmap.getWidth();
-		
+	{	
 		for(int i = 0;i<MaxAnimationFrames; ++i)
 		{
 			Bitmap temp = GFXSurface.GetSurface().LoadBitmap(bmpBitmapIDTable[0][i]);
@@ -90,19 +78,7 @@ public class Animal
 			bmpAnimalBitmapT[0][i] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
 		}
 		AnimalHeight = bmpAnimalBitmapT[0][0].getHeight();
-		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();
-		
-		GetAnimalSize();
-	}
-	
-	protected void GetAnimalSize() 
-	{	
-
-	}
-	
-	public void GetAnimalBitmapID() 
-	{
-		bmpAnimalBitmapID = R.drawable.l1;
+		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();	
 	}
 	
 	private int bmpBitmapIDTable[][] = 

@@ -39,33 +39,6 @@ public class Spider extends Animal
 		this.SetPosition(300,300);
 	}
 	
-	@Override
-	public void GetAnimalBitmapID() 
-	{
-		super.GetAnimalBitmapID();
-		
-		int SpiderBitmapIDTable[] = 
-		{
-			R.drawable.l1,
-		};
-		
-		bmpAnimalBitmapID = SpiderBitmapIDTable[ObjectID];
-	}
-
-	@Override
-	protected void GetAnimalSize() 
-	{
-		super.GetAnimalSize();
-		
-		int SpiderSizeTable[][] =
-		{
-			{ 200,200 },	
-		};
-		
-		AnimalHeight = SpiderSizeTable[ObjectID][0];
-		AnimalWidth = SpiderSizeTable[ObjectID][1];
-	}
-
 	private void OnEatTime(long diff)
 	{
 		if(worm == null)
@@ -289,17 +262,6 @@ public class Spider extends Animal
 	
 		this.OnEatTime(diff);
 		//Move and animations calculation Methods
-		this.OnMove(diff);
-		
-		//Set Sample of Animal bitmap to show up
-		srcSampleAnimalBmp.set(/*AnimationCurrentState*/0 * AnimalBitmapWidth, /*Orientation*/0 * AnimalBitmapHeight,AnimalBitmapWidth,AnimalBitmapHeight);		
-	
-		int left = PositionX;
-		int top = PositionY;
-		int right =  PositionX+200;
-		int bottom =  PositionY+200;
-		
-		dstRectangleOnDraw.set(left, top, right, bottom);		
-		
+		this.OnMove(diff);		
 	}
 }

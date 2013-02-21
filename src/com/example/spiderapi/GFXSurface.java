@@ -172,7 +172,8 @@ public class GFXSurface extends Activity implements OnTouchListener
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
 	{
-		return super.onKeyDown(keyCode, event);
+		return true;
+		//return super.onKeyDown(keyCode, event);
 	}
 	
 	@Override
@@ -289,9 +290,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 		{
 			if(bitmap == null || canvas == null)
 				return;
-					
-			//dst.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
-			//Bitmap tempBMP = Bitmap.createBitmap(bitmap, (int)src.left, (int)src.top, (int)src.right, (int)src.bottom);
+
 			canvas.drawBitmap(bitmap, null, dst, null);
 		}
 		

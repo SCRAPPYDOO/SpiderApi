@@ -24,28 +24,6 @@ public class Worm extends Animal
 	}
 
 	@Override
-	protected void GetAnimalSize() 
-	{
-		super.GetAnimalSize();
-		
-		AnimalWidth = 20;
-		AnimalHeight = 20;	
-	}
-
-	@Override
-	public void GetAnimalBitmapID() 
-	{
-		super.GetAnimalBitmapID();
-	
-		int WormBitmapIDTable[] = 
-		{
-			R.drawable.worm,
-		};
-		
-		bmpAnimalBitmapID = WormBitmapIDTable[ObjectID];		
-	}
-
-	@Override
 	public void OnDraw(Canvas canvas) 
 	{	
 		super.OnDraw(canvas);

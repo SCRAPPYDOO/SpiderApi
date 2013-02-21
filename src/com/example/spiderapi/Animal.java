@@ -23,15 +23,16 @@ public class Animal
 	protected int ObjectID = 0;
 	protected int bmpAnimalBitmapID = 0;
 	protected Bitmap bmpAnimalBitmap = null;
+	protected Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
 	protected int AnimationCurrentState = 0;
 	protected int AnimationTimer = 1000; //first animation
 	protected int AnimationNextTimer = 1000; // time between animation change
 	protected int MaxAnimationsDirection = 8;
-	protected int MaxAnimationFrames = 2;//8;
-	protected RectF srcSampleAnimalBmp = new RectF(0,0,0,0);
-	protected RectF dstRectangleOnDraw = new RectF(0,0,0,0); 	
-	//protected Rect srcSampleAnimalBmp = new Rect(0,0,0,0);
-	//protected Rect dstRectangleOnDraw = new Rect(0,0,0,0); 	
+	protected int MaxAnimationFrames = 8;
+	//protected RectF srcSampleAnimalBmp = new RectF(0,0,0,0);
+	//protected RectF dstRectangleOnDraw = new RectF(0,0,0,0); 	
+	protected Rect srcSampleAnimalBmp = new Rect(0,0,0,0);
+	protected Rect dstRectangleOnDraw = new Rect(0,0,0,0); 	
 	protected int AnimalBitmapHeight = 520;
 	protected int AnimalBitmapWidth = 520;
 	//Flags
@@ -78,15 +79,25 @@ public class Animal
 	{
 		GetAnimalBitmapID();
 		
-		bmpAnimalBitmap = GFXSurface.GetSurface().LoadBitmap(bmpAnimalBitmapID);
+		//bmpAnimalBitmap = GFXSurface.GetSurface().LoadBitmap(bmpAnimalBitmapID);
+		//AnimalBitmapHeight = bmpAnimalBitmap.getHeight();
+		//AnimalBitmapWidth = bmpAnimalBitmap.getWidth();
+		
+		for(int i = 0;i<MaxAnimationFrames; ++i)
+		{
+			Bitmap temp = GFXSurface.GetSurface().LoadBitmap(bmpBitmapIDTable[0][i]);
 			
+			bmpAnimalBitmapT[0][i] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
+		}
+		AnimalHeight = bmpAnimalBitmapT[0][0].getHeight();
+		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();
+		
 		GetAnimalSize();
 	}
 	
 	protected void GetAnimalSize() 
 	{	
-		AnimalHeight = 100;
-		AnimalWidth = 100;
+
 	}
 	
 	public void GetAnimalBitmapID() 
@@ -94,15 +105,22 @@ public class Animal
 		bmpAnimalBitmapID = R.drawable.l1;
 	}
 	
+	private int bmpBitmapIDTable[][] = 
+	{
+			{ R.drawable.l1, R.drawable.l1a, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l4a, R.drawable.l5, R.drawable.l6 },
+			{ R.drawable.l1, R.drawable.l1a, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l4a, R.drawable.l5, R.drawable.l6 },
+	};
+	
 	public void OnDraw(Canvas canvas)
 	{	
 		if(UnitFlag == 1)
 			return;
 		
-		if(bmpAnimalBitmap == null)
+		if(bmpAnimalBitmapT[0][AnimationCurrentState] == null)
 			return;
 	
-		GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmap, srcSampleAnimalBmp, dstRectangleOnDraw);
+		GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmapT[0][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
+		//GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmap, srcSampleAnimalBmp, dstRectangleOnDraw);
 	}
 	
 	public void OnUpdate(long diff)
@@ -130,8 +148,8 @@ public class Animal
 	
 	public boolean IsOnPosition(float fOnTouchX, float fOnTouchY)
 	{
-		if(fOnTouchX > PositionX && fOnTouchX < (PositionX + AnimalWidth)
-				&& fOnTouchY > PositionY && fOnTouchY < (PositionY + AnimalHeight))
+		if(fOnTouchX > PositionX - 0.5*AnimalWidth && fOnTouchX < PositionX + 0.5*AnimalWidth
+				&& fOnTouchY > PositionY - 0.5*AnimalHeight && fOnTouchY < PositionY + 0.5*AnimalHeight)
 				return true;
 
 	    return false;

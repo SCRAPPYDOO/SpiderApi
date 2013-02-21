@@ -17,6 +17,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -168,6 +169,27 @@ public class GFXSurface extends Activity implements OnTouchListener
 		wL.acquire(); //wakelock
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	public void onBackPressed() 
+	{
+		switch(GFXSurface.GetCurrentGameState())
+		{
+			case Game: SetCurrentGameState(EnumGameState.MainMenu); break;
+			
+			case LaunchingScreen:
+			case MainMenu: 
+				break;
+			
+			default:
+				break;
+		}
+	}
 	//called when u touch the screen with this activity opened
 	public boolean onTouch(View v, MotionEvent event)
 	{	
@@ -277,7 +299,6 @@ public class GFXSurface extends Activity implements OnTouchListener
 		{
 			if(bitmap == null || canvas == null)
 				return;
-
 
 			Matrix matrix = new Matrix();
 			matrix.reset();

@@ -292,7 +292,7 @@ public class Spider extends Animal
 		this.OnMove(diff);
 		
 		//Set Sample of Animal bitmap to show up
-		srcSampleAnimalBmp.set(/*AnimationCurrentState*/AnimationCurrentState * AnimalBitmapWidth, /*Orientation*/0 * AnimalBitmapHeight, AnimationCurrentState * AnimalBitmapWidth + AnimalBitmapWidth, 0 * AnimalBitmapHeight + AnimalBitmapHeight);		
+		srcSampleAnimalBmp.set(/*AnimationCurrentState*/0 * AnimalBitmapWidth, /*Orientation*/0 * AnimalBitmapHeight,AnimalBitmapWidth,AnimalBitmapHeight);		
 	
 		int left = PositionX;
 		int top = PositionY;

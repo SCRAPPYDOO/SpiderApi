@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -72,7 +71,6 @@ public class GFXSurface extends Activity implements OnTouchListener
 	Worm TouchedWorm = null;
 	Spider TouchedSpider = null;
 		
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -160,10 +158,11 @@ public class GFXSurface extends Activity implements OnTouchListener
 		spider.SetPosition(x, y);	
 	}
 	
+	@Override
 	protected void onPause() 
 	{
 		//OnSave();
-		onPause();
+		super.onPause();
 		Surface.pause();
 		wL.release(); //wakelock	
 		finish();
@@ -178,8 +177,6 @@ public class GFXSurface extends Activity implements OnTouchListener
 		wL.acquire(); //wakelock
 	}
 
-	
-	
 	@Override
 	public void onBackPressed() 
 	{
@@ -478,42 +475,48 @@ public class GFXSurface extends Activity implements OnTouchListener
 	public static EnumGameState GetCurrentGameState() { return CurrentGameState; }
 	
 	public static void SetCurrentGameState(EnumGameState GameState) 
-	{ 
-		IsGameLoading = true;
+	{
 		LastGameState = CurrentGameState;
 		CurrentGameState = GameState; 
 		//Do everything from old state
-		
+
 		//If we back from game to menu
-		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game ||
-				LastGameState == EnumGameState.Game && CurrentGameState == EnumGameState.MainMenu )
+		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game)
 		{
+			IsGameLoading = true;
 			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
-			//Here need to free up memory taken by game staff
-			WormMenager.OnDelete();
-			WormBox.OnDelete();
-			Terrarium.OnDelete();
-			if(spider != null) spider.OnDelete();
+			//UnloadMainMenu();
+			LoadGame();
+			IsGameLoading = false;
 		}
 		
-		//Do everything from new state
-		
-		switch(CurrentGameState)
-		{			
-			case Game:
-				WormMenager.OnCreate();
-				WormBox.OnCreate();
-				Terrarium.OnCreate();
-				spider = new Spider(0);
-				break;
-
-			default: break;
-		}		
+		if(LastGameState == EnumGameState.Game && CurrentGameState == EnumGameState.MainMenu )
+		{
+			IsGameLoading = true;
+			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
+			UnloadGame();
+			//LoadMainMenu():
+			IsGameLoading = false;
+		}
 		
 		BackgroundMenager.LoadBackground(CurrentGameState);
 		ButtonMenager.CreateButtons(CurrentGameState);
+	}
 	
-		IsGameLoading = false;
+	private static void UnloadGame() 
+	{
+		WormMenager.OnDelete();
+		WormBox.OnDelete();
+		Terrarium.OnDelete();
+		if(spider != null) spider.OnDelete();	
+	}
+	
+	private static void LoadGame() 
+	{
+		WormMenager.OnCreate();
+		WormBox.OnCreate();
+		Terrarium.OnCreate();
+		spider = new Spider(0);
 	}
 	
 	public static void QuitFromGame() 

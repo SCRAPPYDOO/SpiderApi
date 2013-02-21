@@ -34,13 +34,15 @@ public final class R {
         public static final int l5=0x7f020010;
         public static final int l6=0x7f020011;
         public static final int loading_screen_background=0x7f020012;
-        public static final int mainmenu_button_options=0x7f020013;
-        public static final int mainmenu_button_play=0x7f020014;
-        public static final int menu_background_hdpi=0x7f020015;
-        public static final int terrarium01=0x7f020016;
-        public static final int worm=0x7f020017;
-        public static final int wormbox01=0x7f020018;
-        public static final int wormbox01addworm=0x7f020019;
+        public static final int mainmenu_button_dev=0x7f020013;
+        public static final int mainmenu_button_options=0x7f020014;
+        public static final int mainmenu_button_play=0x7f020015;
+        public static final int mainmenu_button_quit=0x7f020016;
+        public static final int menu_background_hdpi=0x7f020017;
+        public static final int terrarium01=0x7f020018;
+        public static final int worm=0x7f020019;
+        public static final int wormbox01=0x7f02001a;
+        public static final int wormbox01addworm=0x7f02001b;
     }
     public static final class raw {
         public static final int buttonclick=0x7f030000;

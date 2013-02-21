@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 
 public class ButtonMenager 
 {
-	private static int n=0;
 	private static int nButtonTableSize = 10;
 	private static InterfaceButton ButtonTable[] = { null, null, null, null, null, null, null, null, null ,null };
 	
@@ -28,7 +27,6 @@ public class ButtonMenager
 				if(ButtonTable[i] == null)
 				{
 					ButtonTable[i] = NewButton;
-					++n;
 					return;
 				}		
 			}	
@@ -42,7 +40,6 @@ public class ButtonMenager
 			if(ButtonTable[i] != null)
 				ButtonTable[i].OnDraw(canvas);
 		}	
-		MsgMenager.AddMassage(0,"ile guzikow: " + n + "");	
 	}
 
 	public static void CreateButtons(EnumGameState currentGameState)
@@ -71,7 +68,8 @@ public class ButtonMenager
 			{
 				new InterfaceButton(303);
 				new InterfaceButton(304);
-				//new InterfaceButton(302);
+				new InterfaceButton(305);
+				new InterfaceButton(306);
 				break;
 			}
 			case Game:
@@ -84,8 +82,7 @@ public class ButtonMenager
 				new InterfaceButton(302);
 				break;
 			}
-			
-				
+		
 			default:
 				break;
 		}
@@ -93,7 +90,6 @@ public class ButtonMenager
 
 	private static void RemoveButtons() 
 	{
-		n=0;
 		for(int i=0; i<nButtonTableSize; ++i)
 		{
 			ButtonTable[i] = null;

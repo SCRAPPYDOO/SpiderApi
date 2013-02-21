@@ -56,7 +56,7 @@ public class GFXSurface extends Activity implements OnTouchListener
     private static SurfaceClass Surface 	= null;
   
 	static Spider spider    = null;
-	private WakeLock wL     = null;
+	private static WakeLock wL     = null;
 	
 	boolean CanGetMoveOrders = true;
 	
@@ -64,7 +64,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 	private static long LaunchingScreenTimer = 5000;
 	//Save Load Variables
 	private static String filename = "SaveData";
-	private SharedPreferences Data = null;
+	private static SharedPreferences Data = null;
 
 	//OnTouch Actions
 	boolean IsWormBoxTaken = false;
@@ -125,7 +125,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 			bmpBackground = Bitmap.createScaledBitmap(bmpBackground, GFXSurface.getScreenWidth(), GFXSurface.getScreenHeight(), true);
 	}
 	
-	private void OnSave()
+	private static void OnSave()
 	{
 		if(spider == null)
 			return;
@@ -151,30 +151,25 @@ public class GFXSurface extends Activity implements OnTouchListener
 		spider.SetPosition(x, y);	
 	}
 	
-	@Override
 	protected void onPause() 
 	{
-		OnSave();
-		super.onPause();
+		//OnSave();
+		onPause();
 		Surface.pause();
-		wL.release(); //wakelock	 
+		wL.release(); //wakelock	
+		finish();
 	}
 
 	@Override
 	protected void onResume() 
 	{
-		OnLoad();
+		//OnLoad();
 		super.onResume();
 		Surface.resume();
 		wL.acquire(); //wakelock
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) 
-	{
-		return true;
-		//return super.onKeyDown(keyCode, event);
-	}
+	
 	
 	@Override
 	public void onBackPressed() 
@@ -424,50 +419,49 @@ public class GFXSurface extends Activity implements OnTouchListener
 						long TimeDiff = CurrentTime - LastCurrentTime;
 						LastCurrentTime = CurrentTime;
 						
-						//if(IsGameLoading != true)
+						switch(CurrentGameState)
 						{
-							switch(CurrentGameState)
+							case LaunchingScreen:
 							{
-								case LaunchingScreen:
-								{
-							    	if(LaunchingScreenTimer < TimeDiff)
-							    	{
-							    		SetCurrentGameState(EnumGameState.MainMenu);
-							    	}LaunchingScreenTimer -= TimeDiff;	
-							    	
-									break;
-								}
-								
-								default:
-									break;
+						    	if(LaunchingScreenTimer < TimeDiff)
+						    	{
+						    		SetCurrentGameState(EnumGameState.MainMenu);
+						    	}LaunchingScreenTimer -= TimeDiff;	
+						    	
+								break;
 							}
 							
-							MsgMenager.OnUpdate(TimeDiff);
-							
-							try
-							{
-								float FrameRate = 60;
-								float PauseTime = 1000 / FrameRate;
-								Thread.sleep((long) PauseTime);	
-							} 
-							catch (InterruptedException e) 
-							{
-								e.printStackTrace();
-							}						
-								
-							if(spider != null)		
-								spider.OnUpdate(TimeDiff);
-	
-							WormBox.OnUpdate(TimeDiff);
-							
-							WormMenager.OnUpdate(TimeDiff);
-				        	
+							default:
+								break;
 						}
-			        	//Log.i("Thread2", "Running parallely");
-			        }
-			    }
-			});
+						
+						MsgMenager.OnUpdate(TimeDiff);
+						
+						try
+						{
+							float FrameRate = 60;
+							float PauseTime = 1000 / FrameRate;
+							Thread.sleep((long) PauseTime);	
+						} 
+						catch (InterruptedException e) 
+						{
+							e.printStackTrace();
+						}						
+							
+						if(spider != null)		
+							spider.OnUpdate(TimeDiff);
 
+						WormBox.OnUpdate(TimeDiff);
+						
+						WormMenager.OnUpdate(TimeDiff);
+			        	
+					}
+					
+					onPause();
+		        	//Log.i("Thread2", "Running parallely");
+		        }
+			});
+			
 			ThreadOne.start();
 			//ThreadTwo = new Thread(this);
 			ThreadTwo.start();
@@ -512,7 +506,6 @@ public class GFXSurface extends Activity implements OnTouchListener
 	public static void QuitFromGame() 
 	{
 		IsRunning = false;
-		//save staff
 		//delete all
 	}
 }

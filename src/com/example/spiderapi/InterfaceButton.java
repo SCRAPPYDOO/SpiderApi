@@ -57,13 +57,21 @@ public class InterfaceButton
 				break;
 				
 			case 303:
-				nPositionX = 200;
-				nPositionY = 400;
+				nPositionX = 160;
+				nPositionY = 300;
 				break;
 			case 304:
-				nPositionX = 200;
+				nPositionX = 160;
+				nPositionY = 400;
+				break;		
+			case 305:
+				nPositionX = 160;
 				nPositionY = 500;
-				break;			
+				break;	
+			case 306:
+				nPositionX = 160;
+				nPositionY = 600;
+				break;	
 				
 			default: break;
 		}
@@ -76,6 +84,10 @@ public class InterfaceButton
 			case 300: 
 			case 301: 
 			case 302:
+			case 303:
+			case 304:
+			case 305:
+			case 306:
 				bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, GFXSurface.getScreenWidth()/3, GFXSurface.getScreenHeight()/15, true);
 				break;
 				
@@ -113,10 +125,14 @@ public class InterfaceButton
 				else
 					GFXSurface.SetCurrentGameState(EnumGameState.InGameSpiderStat);			
 				break;
+			case 302: break;
 			case 303:
 				if(GFXSurface.GetCurrentGameState() == EnumGameState.MainMenu)
 					GFXSurface.SetCurrentGameState(EnumGameState.Game);		
-				break;				
+				break;
+			case 304: break; //launch main menu options
+			case 305: break; //tworcy :DD
+			case 306: GFXSurface.QuitFromGame(); break; //Quit from game
 				
 			default: break;
 		}
@@ -146,6 +162,7 @@ public class InterfaceButton
 		R.drawable.ingame_button_wormbox, 
 		R.drawable.mainmenu_button_play, 
 		R.drawable.mainmenu_button_options,
-
+		R.drawable.mainmenu_button_dev,
+		R.drawable.mainmenu_button_quit,
 	};
 }

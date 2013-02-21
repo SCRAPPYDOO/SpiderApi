@@ -81,4 +81,11 @@ public class WormBox
 	public static float GetWidth() { return nWidth; }
 	
 	public static void SetPosition(float fOnTouchX, float fOnTouchY) { nPositionX = (int) fOnTouchX; nPositionY = (int) fOnTouchY; }
+
+	public static void OnDelete() 
+	{
+		bmpEmptyBox = null;
+		bmpBox = null;
+		bmpOnDrawReady = null;
+	}
 }

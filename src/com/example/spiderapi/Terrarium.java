@@ -32,4 +32,9 @@ public class Terrarium
 		if(bmpTerrariumBitmap != null)
 			GFXSurface.GetSurface().OnDraw(canvas, bmpTerrariumBitmap, TerrariumPosX, TerrariumPosY);
 	}
+
+	public static void OnDelete() 
+	{
+		bmpTerrariumBitmap = null;
+	}
 }

@@ -96,6 +96,17 @@ public class WormMenager
 				WormNumber[i].OnDraw(canvas);
 			}		
 		}
+	}
+
+	public static void OnDelete() 
+	{
+		for(int i=0; i<MaxWormsInTerr; ++i)
+		{
+			if(WormNumber[i] != null)
+			{
+				WormNumber[i] = null;
+			}		
+		}	
 	}	
 }
 

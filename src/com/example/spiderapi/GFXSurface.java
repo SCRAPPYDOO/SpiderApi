@@ -12,12 +12,12 @@ import android.graphics.Matrix.ScaleToFit;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -42,6 +42,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 	//Game Options
 	//actual gamestate
 	private static EnumGameState CurrentGameState = EnumGameState.LaunchingScreen;
+	private static EnumGameState LastGameState = EnumGameState.LaunchingScreen;
 	//Bool for end of game
 	private static boolean IsRunning = false;
 	private static boolean IsGameLoading = false;
@@ -70,10 +71,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 	boolean IsWormBoxTaken = false;
 	Worm TouchedWorm = null;
 	Spider TouchedSpider = null;
-	
-	private static int BackgroundID = R.drawable.hello;	
-	private static Bitmap bmpBackground = null;
-	
+		
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -88,27 +86,23 @@ public class GFXSurface extends Activity implements OnTouchListener
 		//Create a surface
 		Surface = new SurfaceClass(this);
 		Surface.setOnTouchListener(this);
-		setContentView(Surface);	
-		
+			
 		//Get Screen Size
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		screenHeight = size.y;
-		screenWidth = size.x;
+		GetScreenSize();	
 		//
 		//Timer
 		CurrentTime = LastCurrentTime = 0;	
 
-		LaunchingScreenTimer = 5000;
-		CurrentGameState = EnumGameState.LaunchingScreen;
+		LaunchingScreenTimer = 10000;
+		SetCurrentGameState(EnumGameState.LaunchingScreen);
 		IsGameLoading = false;
-		BackgroundID = R.drawable.hello;
-		
+	
 		// !!! All objects loading bitmaps need to be below this line !!!
 		//Load BackGround
-		LoadBackground();	
+		BackgroundMenager.OnCreate();
+		BackgroundMenager.LoadBackground();	
 		
+		setContentView(Surface);
 		//wakelock
 		PowerManager pM = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wL = pM.newWakeLock(PowerManager.FULL_WAKE_LOCK, "whatever");
@@ -118,13 +112,28 @@ public class GFXSurface extends Activity implements OnTouchListener
 		Data = getSharedPreferences(filename, 0);		
 	}
 
-	private static void LoadBackground() 
+	//Compatibility for android version  < API 13
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	private void GetScreenSize() 
 	{
-		bmpBackground = Surface.LoadBitmap(BackgroundID);
-		if(bmpBackground != null)
-			bmpBackground = Bitmap.createScaledBitmap(bmpBackground, GFXSurface.getScreenWidth(), GFXSurface.getScreenHeight(), true);
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
+		{
+			display.getSize(size);
+
+			screenWidth = size.x;
+			screenHeight = size.y; 
+		}
+		else
+		{
+			screenWidth = display.getWidth(); 
+			screenHeight = display.getHeight(); 
+		}		
 	}
-	
+
 	private static void OnSave()
 	{
 		if(spider == null)
@@ -353,9 +362,7 @@ public class GFXSurface extends Activity implements OnTouchListener
 						canvas.drawRGB(0, 0, 0);
 						
 						//Displaying Shit starts from here
-						
-						if(bmpBackground != null) 
-							Surface.OnDraw(canvas, bmpBackground, 0, 0);
+						BackgroundMenager.OnDraw(canvas);
 										
 						if(IsGameLoading != true)
 						{
@@ -473,22 +480,26 @@ public class GFXSurface extends Activity implements OnTouchListener
 	public static void SetCurrentGameState(EnumGameState GameState) 
 	{ 
 		IsGameLoading = true;
-		
-		bmpBackground = null;
-		//BackgroundID = R.drawable.loading_screen_background;
-		//LoadBackground();
-		//Do everything from old state
-
+		LastGameState = CurrentGameState;
 		CurrentGameState = GameState; 
+		//Do everything from old state
+		
+		//If we back from game to menu
+		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game ||
+				LastGameState == EnumGameState.Game && CurrentGameState == EnumGameState.MainMenu )
+		{
+			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
+			//Here need to free up memory taken by game staff
+			WormMenager.OnDelete();
+			WormBox.OnDelete();
+			Terrarium.OnDelete();
+			if(spider != null) spider.OnDelete();
+		}
 		
 		//Do everything from new state
+		
 		switch(CurrentGameState)
-		{
-			case MainMenu:
-				BackgroundID = R.drawable.menu_background_hdpi;
-				LoadBackground();
-				break;
-				
+		{			
 			case Game:
 				WormMenager.OnCreate();
 				WormBox.OnCreate();
@@ -498,6 +509,8 @@ public class GFXSurface extends Activity implements OnTouchListener
 
 			default: break;
 		}		
+		
+		BackgroundMenager.LoadBackground(CurrentGameState);
 		ButtonMenager.CreateButtons(CurrentGameState);
 	
 		IsGameLoading = false;

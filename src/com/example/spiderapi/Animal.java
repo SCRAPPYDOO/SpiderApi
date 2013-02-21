@@ -96,7 +96,6 @@ public class Animal
 			return;
 	
 		GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmapT[0][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
-		//GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmap, srcSampleAnimalBmp, dstRectangleOnDraw);
 	}
 	
 	public void OnUpdate(long diff)
@@ -104,6 +103,19 @@ public class Animal
 		OnAnimate(diff);
 	}	
 	
+	public void OnDelete() 
+	{
+		bmpAnimalBitmap = null;
+		
+		for(int x = 0;x<MaxAnimationFrames; ++x)
+		{
+			for(int z = 0;z<MaxAnimationsDirection; ++z)
+			{
+				bmpAnimalBitmapT[x][z] = null;	
+			}
+		}		
+	}	
+
 	public void OnAnimate(long diff)
 	{
 		if(AnimationTimer < diff)			

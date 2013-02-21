@@ -242,7 +242,14 @@ public class Spider extends Animal
 		//this.bitmap = Surface.LoadBitmap(ObjectID, SluffLevel);
 		SluffTimer = 30000;
 	}
-	
+
+	@Override
+	public void OnDelete() 
+	{
+		worm = null;
+		super.OnDelete();
+	}
+
 	@Override	
 	public void OnUpdate(long diff)
 	{	

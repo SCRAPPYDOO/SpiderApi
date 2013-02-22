@@ -37,4 +37,9 @@ public class Terrarium
 	{
 		bmpTerrariumBitmap = null;
 	}
+	
+	public static void OnUpdate(long diff)
+	{
+		
+	}
 }

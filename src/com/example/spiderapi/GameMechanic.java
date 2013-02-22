@@ -27,7 +27,7 @@ public class GameMechanic
 		CurrentTime = System.currentTimeMillis();	
 		long TimeDiff = CurrentTime - LastCurrentTime;
 		LastCurrentTime = CurrentTime;
-		
+			
 		switch(GameCore.GetCurrentGameState())
 		{
 			case LaunchingScreen:
@@ -45,6 +45,14 @@ public class GameMechanic
 		}
 		
 		MsgMenager.OnUpdate(TimeDiff);
+					
+		AnimalMenager.OnUpdate(TimeDiff);
+		
+		Terrarium.OnUpdate(TimeDiff);
+		
+		WormBox.OnUpdate(TimeDiff);
+		
+		WormMenager.OnUpdate(TimeDiff);
 		
 		try
 		{
@@ -55,10 +63,6 @@ public class GameMechanic
 		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
-		}						
-			
-		WormBox.OnUpdate(TimeDiff);
-		
-		WormMenager.OnUpdate(TimeDiff);
+		}		
 	}
 }

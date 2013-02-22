@@ -232,7 +232,7 @@ public class GameCore extends Activity implements OnTouchListener
 		WormMenager.OnDelete();
 		WormBox.OnDelete();
 		Terrarium.OnDelete();
-		//if(spider != null) spider.OnDelete();	
+		AnimalMenager.OnDelete();
 	}
 	
 	private static void LoadGame() 
@@ -240,7 +240,7 @@ public class GameCore extends Activity implements OnTouchListener
 		WormMenager.OnCreate();
 		WormBox.OnCreate();
 		Terrarium.OnCreate();
-		//spider = new Spider(0);
+		AnimalMenager.OnCreate();
 	}
 
 	public static boolean GetLoadingState() { return IsGameLoading; }

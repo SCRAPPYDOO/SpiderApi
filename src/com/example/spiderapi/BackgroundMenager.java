@@ -11,9 +11,9 @@ public class BackgroundMenager
 	
 	public static void OnCreate()
 	{
-		bmpLoadingScreen = GFXSurface.GetSurface().LoadBitmap(BitmapID[0]);
+		bmpLoadingScreen = GameCore.GetGraphicEngine().LoadBitmap(BitmapID[0]);
 		if(bmpLoadingScreen != null)
-			bmpLoadingScreen = Bitmap.createScaledBitmap(bmpLoadingScreen, GFXSurface.getScreenWidth(), GFXSurface.getScreenHeight(), true);	
+			bmpLoadingScreen = Bitmap.createScaledBitmap(bmpLoadingScreen, GameCore.GetGraphicEngine().getScreenWidth(), GameCore.GetGraphicEngine().getScreenHeight(), true);	
 	}
 	
 	private static int BitmapID[] =
@@ -24,7 +24,7 @@ public class BackgroundMenager
 
 	public static void LoadBackground()
 	{
-		LoadBackground(GFXSurface.GetCurrentGameState()); 
+		LoadBackground(GameCore.GetCurrentGameState()); 
 	}
 	
 	public static void LoadBackground(EnumGameState loadingscreen) 
@@ -48,8 +48,6 @@ public class BackgroundMenager
 	public static void OnDraw(Canvas canvas) 
 	{
 		if(bmpDrawableBitmap != null)
-			GFXSurface.GetSurface().OnDraw(canvas, bmpDrawableBitmap, 0, 0);
+			GameCore.GetGraphicEngine().OnDraw(canvas, bmpDrawableBitmap, 0, 0);
 	}
-
-
 }

@@ -16,12 +16,7 @@ public class MsgMenager
 	
 	static public void OnUpdate(long timeDiff)
 	{
-		if(GFXSurface.spider != null)
-		{
-			X = "" + (int)GFXSurface.spider.GetX();
-			Y = "" + (int)GFXSurface.spider.GetY();
-			Z = "" + GFXSurface.spider.GetHealth();
-		}
+
 	}
 	
 	public static void OnDraw(Canvas canvas)
@@ -31,7 +26,7 @@ public class MsgMenager
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(20); 
 		
-		switch(GFXSurface.GetCurrentGameState())
+		switch(GameCore.GetCurrentGameState())
 		{
 		    case LoadingScreen:
 		    {

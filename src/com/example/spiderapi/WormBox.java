@@ -21,11 +21,11 @@ public class WormBox
 		
 	public static void OnCreate()
 	{	
-		bmpBox = GFXSurface.GetSurface().LoadBitmap(WormboxBitmapID);	
-		bmpEmptyBox = GFXSurface.GetSurface().LoadBitmap(EmptyWormboxBitmapID);
+		bmpBox = GameCore.GetGraphicEngine().LoadBitmap(WormboxBitmapID);	
+		bmpEmptyBox = GameCore.GetGraphicEngine().LoadBitmap(EmptyWormboxBitmapID);
 		
-		bmpBox = Bitmap.createScaledBitmap(bmpBox, GFXSurface.getScreenWidth()/3, GFXSurface.getScreenHeight()/15, true);
-		bmpEmptyBox = Bitmap.createScaledBitmap(bmpEmptyBox, GFXSurface.getScreenWidth()/3, GFXSurface.getScreenHeight()/15, true);
+		bmpBox = Bitmap.createScaledBitmap(bmpBox, GameCore.GetGraphicEngine().getScreenWidth()/3, GameCore.GetGraphicEngine().getScreenHeight()/15, true);
+		bmpEmptyBox = Bitmap.createScaledBitmap(bmpEmptyBox, GameCore.GetGraphicEngine().getScreenWidth()/3, GameCore.GetGraphicEngine().getScreenHeight()/15, true);
 		
 		if(bmpBox != null)
 		{
@@ -33,8 +33,8 @@ public class WormBox
 			nHeight = bmpBox.getHeight();
 		}
 		
-		nPositionX = GFXSurface.getScreenWidth() - nWidth;
-		nPositionY = GFXSurface.getScreenHeight() - nHeight - 100;		
+		nPositionX = GameCore.GetGraphicEngine().getScreenWidth() - nWidth;
+		nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight - 100;		
 	}
 	
 	public static boolean IsOnPosition(float fOnTouchX, float fOnTouchY)
@@ -72,7 +72,7 @@ public class WormBox
 	public static void OnDraw(Canvas canvas) 
 	{		
 		if(bmpOnDrawReady != null)
-			GFXSurface.GetSurface().OnDraw(canvas, bmpOnDrawReady, nPositionX, nPositionY);
+			GameCore.GetGraphicEngine().OnDraw(canvas, bmpOnDrawReady, nPositionX, nPositionY);
 	}	
 	
 	public static float GetPositionX() { return nPositionX; }

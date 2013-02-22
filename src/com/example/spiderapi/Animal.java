@@ -73,7 +73,7 @@ public class Animal
 	{	
 		for(int i = 0;i<MaxAnimationFrames; ++i)
 		{
-			Bitmap temp = GFXSurface.GetSurface().LoadBitmap(bmpBitmapIDTable[0][i]);
+			Bitmap temp = GameCore.GetGraphicEngine().LoadBitmap(bmpBitmapIDTable[0][i]);
 			
 			bmpAnimalBitmapT[0][i] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
 		}
@@ -95,7 +95,7 @@ public class Animal
 		if(bmpAnimalBitmapT[0][AnimationCurrentState] == null)
 			return;
 	
-		GFXSurface.GetSurface().OnDraw(canvas, bmpAnimalBitmapT[0][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
+		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmapT[0][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
 	}
 	
 	public void OnUpdate(long diff)

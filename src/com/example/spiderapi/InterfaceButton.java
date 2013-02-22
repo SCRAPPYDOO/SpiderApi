@@ -2,6 +2,7 @@ package com.example.spiderapi;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class InterfaceButton 
 {
@@ -22,7 +23,7 @@ public class InterfaceButton
 	public void OnCreate()
 	{			
 		nBitmapID = ButtonBitmapIDTable[nButtonID-300];
-		bmpBitmap = GFXSurface.GetSurface().LoadBitmap(nBitmapID);
+		bmpBitmap = GameCore.GetGraphicEngine().LoadBitmap(nBitmapID);
 			
 		if(bmpBitmap == null)
 			return;	
@@ -43,17 +44,17 @@ public class InterfaceButton
 		{
 			case 300:
 				nPositionX = 0;
-				nPositionY = GFXSurface.getScreenHeight() - nHeight;
+				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
 				break;
 			
 			case 301:
 				nPositionX = nWidth;
-				nPositionY = GFXSurface.getScreenHeight() - nHeight;
+				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
 				break;
 				
 			case 302:
 				nPositionX = nWidth*2;
-				nPositionY = GFXSurface.getScreenHeight() - nHeight;
+				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
 				break;
 				
 			case 303:
@@ -88,7 +89,7 @@ public class InterfaceButton
 			case 304:
 			case 305:
 			case 306:
-				bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, GFXSurface.getScreenWidth()/3, GFXSurface.getScreenHeight()/15, true);
+				bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, GameCore.GetGraphicEngine().getScreenWidth()/3, GameCore.GetGraphicEngine().getScreenHeight()/15, true);
 				break;
 				
 			default: break;
@@ -98,7 +99,7 @@ public class InterfaceButton
 	public void OnDraw(Canvas canvas) 
 	{
 		if(bmpBitmap != null)
-			GFXSurface.GetSurface().OnDraw(canvas, bmpBitmap, nPositionX, nPositionY);	
+			GameCore.GetGraphicEngine().OnDraw(canvas, bmpBitmap, nPositionX, nPositionY);	
 	}
 
 	public void OnClickMove()
@@ -114,28 +115,30 @@ public class InterfaceButton
 		switch(nButtonID)
 		{
 			case 300: 
-				if(GFXSurface.GetCurrentGameState() == EnumGameState.InGameMenu)
-					GFXSurface.SetCurrentGameState(EnumGameState.Game);
+				if(GameCore.GetCurrentGameState() == EnumGameState.InGameMenu)
+					GameCore.SetCurrentGameState(EnumGameState.Game);
 				else
-					GFXSurface.SetCurrentGameState(EnumGameState.InGameMenu);
+					GameCore.SetCurrentGameState(EnumGameState.InGameMenu);
 				break;
 			case 301:
-				if(GFXSurface.GetCurrentGameState() == EnumGameState.InGameSpiderStat)
-					GFXSurface.SetCurrentGameState(EnumGameState.Game);
+				if(GameCore.GetCurrentGameState() == EnumGameState.InGameSpiderStat)
+					GameCore.SetCurrentGameState(EnumGameState.Game);
 				else
-					GFXSurface.SetCurrentGameState(EnumGameState.InGameSpiderStat);			
+					GameCore.SetCurrentGameState(EnumGameState.InGameSpiderStat);			
 				break;
 			case 302: break;
 			case 303:
-				if(GFXSurface.GetCurrentGameState() == EnumGameState.MainMenu)
-					GFXSurface.SetCurrentGameState(EnumGameState.Game);		
+				if(GameCore.GetCurrentGameState() == EnumGameState.MainMenu)
+					GameCore.SetCurrentGameState(EnumGameState.Game);		
 				break;
 			case 304: break; //launch main menu options
 			case 305: break; //tworcy :DD
-			case 306: GFXSurface.QuitFromGame(); break; //Quit from game
+			case 306: GameCore.QuitFromGame(); break; //Quit from game
 				
 			default: break;
 		}
+		
+		Log.i("InterfaceButton", "OnClickUp: " + nButtonID + "");
 	}
 	
 	public void OnClickDown()

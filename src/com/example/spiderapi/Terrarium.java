@@ -14,11 +14,11 @@ public class Terrarium
 
 	public static void OnCreate()
 	{
-		bmpTerrariumBitmap = GFXSurface.GetSurface().LoadBitmap(TerrBitmapID);
+		bmpTerrariumBitmap = GameCore.GetGraphicEngine().LoadBitmap(TerrBitmapID);
 		
 		if(bmpTerrariumBitmap == null) return;
 			
-		bmpTerrariumBitmap = Bitmap.createScaledBitmap(bmpTerrariumBitmap, GFXSurface.getScreenWidth(), (int) (GFXSurface.getScreenHeight() - WormBox.GetHeight()), true);
+		bmpTerrariumBitmap = Bitmap.createScaledBitmap(bmpTerrariumBitmap, GameCore.GetGraphicEngine().getScreenWidth(), (int) (GameCore.GetGraphicEngine().getScreenHeight() - WormBox.GetHeight()), true);
 		
 		TerrariumWidth = bmpTerrariumBitmap.getWidth();
 		TerrariumHeight = bmpTerrariumBitmap.getHeight();		
@@ -30,7 +30,7 @@ public class Terrarium
 	public static void OnDraw(Canvas canvas)
 	{
 		if(bmpTerrariumBitmap != null)
-			GFXSurface.GetSurface().OnDraw(canvas, bmpTerrariumBitmap, TerrariumPosX, TerrariumPosY);
+			GameCore.GetGraphicEngine().OnDraw(canvas, bmpTerrariumBitmap, TerrariumPosX, TerrariumPosY);
 	}
 
 	public static void OnDelete() 

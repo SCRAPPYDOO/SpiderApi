@@ -25,6 +25,8 @@ enum EnumGameState
 	InGameWormShop,
 	MainMenu,
 	LaunchingScreen,
+	MainMenuOptions,
+	MainMenuDevelopers,
 }
 
 public class GameCore extends Activity implements OnTouchListener

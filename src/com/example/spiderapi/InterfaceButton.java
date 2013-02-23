@@ -13,6 +13,8 @@ public class InterfaceButton
 	private int nButtonID= 0;
 	private int nBitmapID= 0;
 	private Bitmap bmpBitmap = null;
+	private boolean IsDrawAble = false;
+	private EnumGameState gamestateToDraw = EnumGameState.MainMenu;
 	
 	public InterfaceButton(int ButtonID)
 	{
@@ -34,8 +36,24 @@ public class InterfaceButton
 		nHeight = bmpBitmap.getHeight();
 
 		SetUpPosition();
-				
+		
+		SetGameStateToDraw();		
+		
 		ButtonMenager.AddButton(this);
+	}
+
+	private void SetGameStateToDraw() 
+	{
+		EnumGameState GameStateTable[] =
+		{
+			EnumGameState.Game,
+			EnumGameState.Game,
+			EnumGameState.Game,
+		};
+		
+		if(GameStateTable[nButtonID-300] != null)
+			gamestateToDraw = GameStateTable[nButtonID-300];
+		
 	}
 
 	private void SetUpPosition() 
@@ -97,11 +115,30 @@ public class InterfaceButton
 	}
 
 	public void OnDraw(Canvas canvas) 
-	{
-		if(bmpBitmap != null)
-			GameCore.GetGraphicEngine().OnDraw(canvas, bmpBitmap, nPositionX, nPositionY);	
+	{	
+		if(bmpBitmap != null && IsDrawAble == true)
+			GameCore.GetGraphicEngine().OnDraw(canvas, bmpBitmap, nPositionX, nPositionY);
 	}
 
+	public void OnUpdate(long diff)
+	{
+		//Check if  we can draw to screen and be clicked
+		IsDrawAble = false;
+		
+		EnumGameState CoreState = GameCore.GetCurrentGameState();
+		
+		switch(nButtonID)
+		{
+			case 300: if(CoreState == EnumGameState.InGameMenu || CoreState == EnumGameState.Game || CoreState == EnumGameState.InGameSpiderStat || CoreState == EnumGameState.InGameWormShop); IsDrawAble = true; break;
+			case 301: 	
+		
+			default:
+				if(CoreState == gamestateToDraw)
+					IsDrawAble = true;
+				break;
+		}
+	}
+	
 	public void OnClickMove()
 	{
 		switch(nButtonID)
@@ -112,6 +149,12 @@ public class InterfaceButton
 	
 	public void OnClickUp() 
 	{
+		if(IsDrawAble == false)
+		{
+			Log.i("InterfaceButton", "OnClickUp: " + nButtonID + " Button nie jest odblokowany: IsDrawAble == false");
+			return;
+		}
+		
 		switch(nButtonID)
 		{
 			case 300: 
@@ -136,9 +179,7 @@ public class InterfaceButton
 			case 306: GameCore.QuitFromGame(); break; //Quit from game
 				
 			default: break;
-		}
-		
-		Log.i("InterfaceButton", "OnClickUp: " + nButtonID + "");
+		}	
 	}
 	
 	public void OnClickDown()

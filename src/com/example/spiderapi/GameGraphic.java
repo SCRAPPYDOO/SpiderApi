@@ -89,6 +89,7 @@ public class GameGraphic extends SurfaceView
 			ButtonMenager.OnDraw(canvas);
 									
 		}
+		
 		MsgMenager.OnDraw(canvas);
 
 		surfHolder.unlockCanvasAndPost(canvas);

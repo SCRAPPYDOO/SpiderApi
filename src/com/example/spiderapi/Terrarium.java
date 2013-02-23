@@ -14,6 +14,8 @@ public class Terrarium
 
 	public static void OnCreate()
 	{
+		MsgMenager.AddMassage(0, "Loading Terrarium");
+		
 		bmpTerrariumBitmap = GameCore.GetGraphicEngine().LoadBitmap(TerrBitmapID);
 		
 		if(bmpTerrariumBitmap == null) return;
@@ -24,9 +26,9 @@ public class Terrarium
 		TerrariumHeight = bmpTerrariumBitmap.getHeight();		
 	}
 	
-	public int GetWidth() {return TerrariumWidth; }
-	public int GetHeight() {return TerrariumHeight; }	
-	
+	public static int GetWidth() {return TerrariumWidth; }
+	public static int GetHeight() {return TerrariumHeight; }	
+
 	public static void OnDraw(Canvas canvas)
 	{
 		if(bmpTerrariumBitmap != null)

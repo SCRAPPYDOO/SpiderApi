@@ -35,24 +35,39 @@ public class Animal
 	//Positions
 	protected int PositionX = 50;
 	protected int PositionY = 50;
-	protected float fGoX = 50.0f;
-	protected float fGoY = 50.0f;
+	protected int GoX = 50;
+	protected int GoY = 50;
 	protected int AnimalHeight = 0;
 	protected int AnimalWidth = 0;
 	protected float fSpeed = 0.0f;
 	protected int Orientation = 0;
-	protected float fRadius = 0.0f;
+	protected int Radius = 0;
 	protected MoveDirection moveDirection = MoveDirection.Down;
 	//Social
 	protected int AnimalSize = 1;
 	protected int Health = 5;
 	protected int HungryTimer = 5000; //when spider whant to eat
 	//Position Methods
-	public float GetX() { return PositionX; }
-	public float GetY() { return PositionY; }
+	public int GetX() { return PositionX; }
+	public int GetY() { return PositionY; }
 	public float GetW() { return AnimalWidth; }
 	public float GetH() { return AnimalHeight; }
-	public void SetPosition(float posX, float posY) { PositionX = (int) posX; PositionY = (int) posY; }
+	
+	public void SetPosition(int posX, int posY) 
+	{ 
+		if(IsPositionInTerrarium(posX, posY) == true)
+		{
+			PositionX = posX; PositionY = posY; 
+		}
+	}
+	
+	protected boolean IsPositionInTerrarium(int posX, int posY) 
+	{
+		if(posX - 0.5*AnimalWidth > 0 && posX + 0.5*AnimalWidth < Terrarium.GetWidth()
+				&& posY - 0.5*AnimalHeight > 0 && posY  + 0.5*AnimalHeight < Terrarium.GetHeight())
+			return true;
+		return false;
+	}
 	public void SetMovementFlag(int Flag) { MovementFlag = Flag; }
 	//Constructor
 	public Animal() 
@@ -160,7 +175,7 @@ public class Animal
 	
 	public boolean IsInRange(Animal animal) 
 	{
-		if(GetDistance(PositionX, PositionY, animal.GetX(),  animal.GetY()) < fRadius + animal.fRadius)
+		if(GetDistance(PositionX, PositionY, animal.GetX(),  animal.GetY()) < Radius + animal.Radius)
 			return true;
 	
 		return false;

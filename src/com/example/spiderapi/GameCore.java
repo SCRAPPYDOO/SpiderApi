@@ -55,11 +55,10 @@ public class GameCore extends Activity implements OnTouchListener
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-	
 		//Full Screen
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				
+		
 		GraphicEngine = new GameGraphic(this);
 		GraphicEngine.setOnTouchListener(this);
 		
@@ -161,8 +160,6 @@ public class GameCore extends Activity implements OnTouchListener
 		    	{
 		    		GraphicEngine.OnUpdate();
 		    	}
-				ThreadOne.interrupt();
-				ThreadTwo.interrupt();
 		    	Log.i("GameCore", "Thread 2 closed");
 		    	finish();
 		    }
@@ -213,6 +210,7 @@ public class GameCore extends Activity implements OnTouchListener
 		//If we back from game to menu
 		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game)
 		{
+			CurrentGameState = EnumGameState.LoadingScreen;
 			IsGameLoading = true;
 			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
 			//UnloadMainMenu();
@@ -232,6 +230,14 @@ public class GameCore extends Activity implements OnTouchListener
 		BackgroundMenager.LoadBackground(CurrentGameState);
 		ButtonMenager.CreateButtons(CurrentGameState);
 		Log.i("GameCore", "Switched gamestate to " + CurrentGameState + "");
+		
+		switch(CurrentGameState)
+		{
+			case LaunchingScreen: if(GameMechanicC != null) GameMechanicC.SetLauncherTimer(10000); break;
+
+			default:
+				break;
+		}
 	}
 		
 	private static void UnloadGame() 
@@ -248,6 +254,7 @@ public class GameCore extends Activity implements OnTouchListener
 		WormBox.OnCreate();
 		Terrarium.OnCreate();
 		AnimalMenager.OnCreate();
+		CurrentGameState = EnumGameState.Game;
 	}
 
 	public static boolean GetLoadingState() { return IsGameLoading; }
@@ -255,6 +262,5 @@ public class GameCore extends Activity implements OnTouchListener
 	public static void QuitFromGame() 
 	{
 		IsRunning = false;
-
 	}	
 }

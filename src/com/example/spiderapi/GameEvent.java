@@ -27,10 +27,10 @@ public class GameEvent
 			Log.i("GameEvent", "OnTouch: Button On Position");
 		
 		if(TouchedWorm != null)
-			TouchedWorm.SetPosition(fOnTouchX, fOnTouchY);
+			TouchedWorm.SetPosition((int)fOnTouchX, (int)fOnTouchY);
 		
 		if(TouchedSpider != null)
-			TouchedSpider.SetPosition(fOnTouchX, fOnTouchY);
+			TouchedSpider.SetPosition((int)fOnTouchX, (int)fOnTouchY);
 				
 		switch(ev)
 		{
@@ -43,9 +43,9 @@ public class GameEvent
 					TouchedWorm.SetIsInWormBox(false);
 				}
 				
-				if(spider != null && spider.IsOnPosition(fOnTouchX, fOnTouchY) && TouchedWorm == null)
+				if(AnimalMenager.GetSpider() != null && AnimalMenager.GetSpider().IsOnPosition(fOnTouchX, fOnTouchY) && TouchedWorm == null)
 				{
-					TouchedSpider = spider;
+					TouchedSpider = AnimalMenager.GetSpider();
 					TouchedSpider.SetMovementFlag(3);
 				}
 				
@@ -82,12 +82,12 @@ public class GameEvent
 				TouchedSpider = null;
 				bButton = null;
 				
-				if(spider != null)
+				if(AnimalMenager.GetSpider() != null)
 				{
-					spider.SetMovementFlag(1);
+					AnimalMenager.GetSpider().SetMovementFlag(1);
 				
 					if(CanGetMoveOrders)
-						spider.SetUpWaypoint(fOnTouchX, fOnTouchY, 0);
+						AnimalMenager.GetSpider().SetUpWaypoint(fOnTouchX, fOnTouchY, 0);
 				}
 				break;
 			}

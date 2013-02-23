@@ -13,7 +13,7 @@ public class InterfaceButton
 	private int nButtonID= 0;
 	private int nBitmapID= 0;
 	private Bitmap bmpBitmap = null;
-	private boolean IsDrawAble = false;
+	private boolean IsDrawAble = true;
 	private EnumGameState gamestateToDraw = EnumGameState.MainMenu;
 	
 	public InterfaceButton(int ButtonID)
@@ -37,7 +37,7 @@ public class InterfaceButton
 
 		SetUpPosition();
 		
-		SetGameStateToDraw();		
+		//SetGameStateToDraw();		
 		
 		ButtonMenager.AddButton(this);
 	}
@@ -58,38 +58,43 @@ public class InterfaceButton
 
 	private void SetUpPosition() 
 	{
+		int ScreenWidth = GameCore.GetGraphicEngine().getScreenWidth();
+		int ScreenHeight = GameCore.GetGraphicEngine().getScreenHeight();
+				
 		switch(nButtonID)
 		{
+			//Game UI Buttons
 			case 300:
 				nPositionX = 0;
-				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
+				nPositionY = ScreenHeight - nHeight;
 				break;
 			
 			case 301:
 				nPositionX = nWidth;
-				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
+				nPositionY = ScreenHeight - nHeight;
 				break;
 				
 			case 302:
 				nPositionX = nWidth*2;
-				nPositionY = GameCore.GetGraphicEngine().getScreenHeight() - nHeight;
+				nPositionY = ScreenHeight - nHeight;
 				break;
 				
+			//Main Menu Buttons
 			case 303:
-				nPositionX = 160;
-				nPositionY = 300;
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (ScreenHeight * 0.5 - 150);
 				break;
 			case 304:
-				nPositionX = 160;
-				nPositionY = 400;
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (ScreenHeight * 0.5 - 50);
 				break;		
 			case 305:
-				nPositionX = 160;
-				nPositionY = 500;
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (ScreenHeight * 0.5 + 50);
 				break;	
 			case 306:
-				nPositionX = 160;
-				nPositionY = 600;
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (ScreenHeight * 0.5 + 150);
 				break;	
 				
 			default: break;
@@ -123,8 +128,9 @@ public class InterfaceButton
 	public void OnUpdate(long diff)
 	{
 		//Check if  we can draw to screen and be clicked
-		IsDrawAble = false;
+		IsDrawAble = true;
 		
+		/*
 		EnumGameState CoreState = GameCore.GetCurrentGameState();
 		
 		switch(nButtonID)
@@ -137,6 +143,7 @@ public class InterfaceButton
 					IsDrawAble = true;
 				break;
 		}
+		*/
 	}
 	
 	public void OnClickMove()

@@ -65,4 +65,6 @@ public class GameMechanic
 			e.printStackTrace();
 		}		
 	}
+
+	public void SetLauncherTimer(long i) { LaunchingScreenTimer = i; }
 }

@@ -8,7 +8,7 @@ public class Spider extends Animal
 	private int SluffTimer = 10000;
 
 	//Moving Variables	
-	private float vectorX, vectorY, fNewX, fNewY;	
+	private float vectorX, vectorY;
 	private int RandomWaypointTimer = 5000;
 	
 	//Pointers
@@ -31,11 +31,11 @@ public class Spider extends Animal
 		super.OnCreate();
 	
 		//Initialize Variable
-		fRadius = 10.0f;
 		MovementFlag = 1; //super
 		fSpeed = 0.5f;
 
 		this.SetPosition(300,300);
+		this.SetupStats();
 	}
 	
 	@Override
@@ -67,6 +67,12 @@ public class Spider extends Animal
 		this.OnMove(diff);		
 	}	
 	
+	private void SetupStats() 
+	{
+	
+	}
+	
+	
 	private void OnEatTime(long diff)
 	{
 		if(worm == null)
@@ -76,8 +82,8 @@ public class Spider extends Animal
 	    		worm = WormMenager.GetRandomWorm();
 	    		if(worm != null && !worm.IsInWormBox())
 	    		{
-		    		fGoX = worm.GetX();
-		    		fGoY = worm.GetY();
+		    		GoX = worm.GetX();
+		    		GoY = worm.GetY();
 	    		}
 	    		else
 	    		{
@@ -127,7 +133,7 @@ public class Spider extends Animal
 	    }		
 		
 		//fGoX = (randomX - (randomX - TerrX)) * vectorX;
-		if(fGoX < 0) fGoX = 0;
+		if(GoX < 0) GoX = 0;
 			//RandomWaypoint();
 			//fGoX = (randomX - (randomX - TerrX)) * 1;
 		//if(fGoX > TerrX) fGoX = 0;
@@ -136,7 +142,7 @@ public class Spider extends Animal
 			
 		//fGoY = (randomY - (randomY - TerrY)) * vectorY;
 		
-		if(fGoY < 0) fGoY = 0;
+		if(GoY < 0) GoY = 0;
 			//fGoY = (randomY - (randomY - TerrY)) * 1;
 			//RandomWaypoint();
 		//if(fGoY > TerrY) fGoY = 0; 
@@ -150,7 +156,7 @@ public class Spider extends Animal
 		
 		if(MovementFlag == 3)
 			return;		
-		
+			
 		/*
 		if(worm == null)
 		{
@@ -162,32 +168,34 @@ public class Spider extends Animal
 		}
 		*/
 		
-	    if(PositionX == fGoX && PositionY == fGoY)
+	    if(PositionX == GoX && PositionY == GoY)
 	    {	
 	        //StopMove();
 	    	//set flag not moving
 	        return;
 	    }
  
-	    vectorX = vectorY = fNewX = fNewY = 0.0f;
+		int fNewX, fNewY;	
+	    
+	    vectorX = vectorY = fNewX = fNewY = 0;
 
 	    MoveDirection Move = null;
 
-	    if(PositionX < fGoX && PositionY < fGoY)
+	    if(PositionX < GoX && PositionY < GoY)
 	    	Move = MoveDirection.DownRight;
-	    if(PositionX > fGoX && PositionY < fGoY)
+	    if(PositionX > GoX && PositionY < GoY)
 	    	Move = MoveDirection.DownLeft;
-	    if(PositionX < fGoX && PositionY > fGoY)
+	    if(PositionX < GoX && PositionY > GoY)
 	    	Move = MoveDirection.UpRight;
-	    if(PositionX > fGoX && PositionY > fGoY)
+	    if(PositionX > GoX && PositionY > GoY)
 	    	Move = MoveDirection.UpLeft;
-	    if(PositionX == fGoX && PositionY > fGoY)
+	    if(PositionX == GoX && PositionY > GoY)
 	    	Move = MoveDirection.Up;
-	    if(PositionX == fGoX && PositionY < fGoY)
+	    if(PositionX == GoX && PositionY < GoY)
 	    	Move = MoveDirection.Down;
-	    if(PositionX < fGoX && PositionY == fGoY)
+	    if(PositionX < GoX && PositionY == GoY)
 	    	Move = MoveDirection.Right;
-	    if(PositionX > fGoX && PositionY == fGoY)
+	    if(PositionX > GoX && PositionY == GoY)
 	    	Move = MoveDirection.Left;	    
 	        
 	    //Prepare orientation
@@ -214,14 +222,17 @@ public class Spider extends Animal
 	    fNewX = PositionX;
 	    fNewY = PositionY;
 	    
-	    if(PositionX != fGoX)
-	        fNewX = PositionX + (fSpeed*vectorX);
+	    if(PositionX != GoX)
+	    {
+	    	fNewX = (int) (PositionX + (fSpeed*vectorX));
+	    }
 
-	    if(PositionY != fGoY)
-	        fNewY = PositionY + (fSpeed*vectorY); 
+	    if(PositionY != GoY)
+	    {
+	    	fNewY = (int) (PositionY + (fSpeed*vectorY)); 
+	    }
 
-        PositionX = (int) fNewX; 
-        PositionY = (int) fNewY;	        
+	    SetPosition(fNewX, fNewY);
 	}
 	
     boolean CheckOrientation(MoveDirection MoveDir)
@@ -255,10 +266,10 @@ public class Spider extends Animal
     	return false;
     }	
 	
-	public void SetUpWaypoint(float GoX, float GoY, float GoZ)
+	public void SetUpWaypoint(float GoXPoint, float GoYPoint, float GoZPoint)
 	{		
-		fGoX = GoX;
-		fGoY = GoY;
+		GoX = (int) GoXPoint;
+		GoY = (int) GoYPoint;
 		//fGoZ = GoZ;
 		worm = null;
 	}

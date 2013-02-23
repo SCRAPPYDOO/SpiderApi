@@ -6,6 +6,10 @@ import android.graphics.Paint;
 
 public class MsgMenager 
 {
+	//Text Settings
+	private static int TextSizeLoadingScreen = 20;
+	
+	
 	private static String stringtable[] = { null, null, null, null };
 	static private String X = "";
 	static private String Y = "";
@@ -24,13 +28,13 @@ public class MsgMenager
 		//Text Testing
 		Paint paint = new Paint(); 
 		paint.setColor(Color.WHITE);
-		paint.setTextSize(20); 
+		paint.setTextSize(TextSizeLoadingScreen); 
 		
 		switch(GameCore.GetCurrentGameState())
 		{
 		    case LoadingScreen:
 		    {
-				canvas.drawText(LoadingInformation, 20, 550, paint);		
+				canvas.drawText(LoadingInformation, 10, GameCore.GetGraphicEngine().getHeight() - TextSizeLoadingScreen , paint);		
 		    	break;
 		    }
 			case Game:
@@ -58,6 +62,8 @@ public class MsgMenager
 			}
 			default: break;
 		}	
+		
+		canvas.drawText(DataMenager.GetGameVersion(), 10, 20, paint);		
 	}
 	
 	static public void AddMssage(int msgtype, int Fps)

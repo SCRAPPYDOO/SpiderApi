@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 
 public class DataMenager 
 {
+	private static String gameVersion = "ver 0.12";
+	public static String GetGameVersion() { return gameVersion; }
+	
 	private static String filename = "SaveData";
 	private static SharedPreferences Data = null;	
 	
@@ -16,19 +19,17 @@ public class DataMenager
 	
 	public static void OnSave()
 	{
-		
 		if(AnimalMenager.GetSpider() == null || Data == null)
 			return;
 
-		float X = AnimalMenager.GetSpider().GetX();
-		float Y = AnimalMenager.GetSpider().GetY();
+		int X = AnimalMenager.GetSpider().GetX();
+		int Y = AnimalMenager.GetSpider().GetY();
 	
 		SharedPreferences.Editor Editor = Data.edit();
-		Editor.putFloat("X", X);
-		Editor.putFloat("Y", Y);
+		Editor.putInt("X", X);
+		Editor.putInt("Y", Y);
 		
 		Editor.commit();	
-		
 	}
 	
 	public static void OnLoad()
@@ -36,8 +37,8 @@ public class DataMenager
 		if(AnimalMenager.GetSpider() == null || Data == null)
 			return;		
 		
-		float x = Data.getFloat("X", 0);
-		float y = Data.getFloat("Y", 0);
+		int x = Data.getInt("X", 0);
+		int y = Data.getInt("Y", 0);
 		AnimalMenager.GetSpider().SetPosition(x, y);	
 	}
 }

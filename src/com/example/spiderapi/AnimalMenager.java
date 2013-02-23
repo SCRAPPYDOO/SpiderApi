@@ -35,5 +35,7 @@ public class AnimalMenager
 	{
 		spider = null;
 	}
+	
+	public static Spider GetSpider() { return spider; }
 
 }

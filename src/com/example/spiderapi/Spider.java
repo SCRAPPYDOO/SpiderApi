@@ -7,16 +7,15 @@ public class Spider extends Animal
 	private int SluffLevel = 0;//wylinka ze slownika :D
 	private int SluffTimer = 10000;
 
-	//Moving Variables
-
-	//private float fGoZ = 0.0f;
-	
+	//Moving Variables	
 	private float vectorX, vectorY, fNewX, fNewY;	
 	private int RandomWaypointTimer = 5000;
 	
 	//Pointers
 	private Worm worm = null;	
 
+	public int GetSluffLevel() { return SluffLevel; }
+	
 	public Spider(int objectID)
 	{
 		ObjectID = objectID;
@@ -38,6 +37,35 @@ public class Spider extends Animal
 
 		this.SetPosition(300,300);
 	}
+	
+	@Override
+	public void OnDelete() 
+	{
+		worm = null;
+		super.OnDelete();
+	}
+
+	@Override	
+	public void OnUpdate(long diff)
+	{	
+		super.OnUpdate(diff);
+		
+		//if(Health < -5)
+			//return;
+			//Smierc :D
+		
+		if(Health <= 0)
+			HungryTimer = 2000;
+		
+    	if(SluffTimer < diff)
+    	{
+    		GetNewSluff();
+    	}SluffTimer -= diff;	
+	
+		this.OnEatTime(diff);
+		//Move and animations calculation Methods
+		this.OnMove(diff);		
+	}	
 	
 	private void OnEatTime(long diff)
 	{
@@ -234,41 +262,12 @@ public class Spider extends Animal
 		//fGoZ = GoZ;
 		worm = null;
 	}
-		
+			
 	public void GetNewSluff()
 	{
 		++SluffLevel;
 		//add scale all bitmaps by sluuf size
 		//this.bitmap = Surface.LoadBitmap(ObjectID, SluffLevel);
 		SluffTimer = 30000;
-	}
-
-	@Override
-	public void OnDelete() 
-	{
-		worm = null;
-		super.OnDelete();
-	}
-
-	@Override	
-	public void OnUpdate(long diff)
-	{	
-		super.OnUpdate(diff);
-		
-		//if(Health < -5)
-			//return;
-			//Smierc :D
-		
-		if(Health <= 0)
-			HungryTimer = 2000;
-		
-    	if(SluffTimer < diff)
-    	{
-    		GetNewSluff();
-    	}SluffTimer -= diff;	
-	
-		this.OnEatTime(diff);
-		//Move and animations calculation Methods
-		this.OnMove(diff);		
 	}
 }

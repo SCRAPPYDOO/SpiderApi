@@ -69,6 +69,8 @@ public class GameCore extends Activity implements OnTouchListener
 		
 		EventMenager = new GameEvent();
 		
+		DataMenager.OnCreate(getSharedPreferences(DataMenager.GetDataFilename(), 0));
+		
 		//WakeLock
 		PowerManager pM = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakeLock = pM.newWakeLock(PowerManager.FULL_WAKE_LOCK, "whatever");
@@ -101,6 +103,8 @@ public class GameCore extends Activity implements OnTouchListener
 	protected void onPause() 
 	{
 		Log.i("GameCore", "OnPause");
+		
+		DataMenager.OnSave();
 		wakeLock.release();	
 		IsRunning = false;
 		
@@ -129,7 +133,8 @@ public class GameCore extends Activity implements OnTouchListener
 
 	@Override
 	protected void onResume() 
-	{				
+	{	
+		DataMenager.OnLoad();
 		setContentView(GraphicEngine);
 		wakeLock.acquire();
 		

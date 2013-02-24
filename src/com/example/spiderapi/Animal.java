@@ -26,7 +26,7 @@ public class Animal
 	protected int AnimationTimer = 1000; //first animation
 	protected int AnimationNextTimer = 1000; // time between animation change
 	protected int MaxAnimationsDirection = 8;
-	protected int MaxAnimationFrames = 8;
+	protected int MaxAnimationFrames = 1;
 	protected int AnimalBitmapHeight = 520;
 	protected int AnimalBitmapWidth = 520;
 	//Flags
@@ -52,8 +52,10 @@ public class Animal
 	protected int AnimalWidth = 0;
 	protected float fSpeed = 0.0f;
 	protected int Orientation = 0;
+	protected long OrientationTimer = 1000;
+	protected int MoveDirection = 0;
 	protected int Radius = 0;
-	protected MoveDirection moveDirection = MoveDirection.Down;
+
 	//Social
 	protected int AnimalSize = 1;
 	protected int Health = 5;
@@ -79,8 +81,9 @@ public class Animal
 			return true;
 		return false;
 	}
+	
 	public void SetMovementFlag(int Flag) { MovementFlag = Flag; }
-	//Constructor
+
 	public Animal() 
 	{
 		this.OnCreate();
@@ -97,11 +100,14 @@ public class Animal
 	
 	protected void OnCreate()
 	{	
-		for(int i = 0;i<MaxAnimationFrames; ++i)
+		for(int i = 0;i<MaxAnimationsDirection; ++i)
 		{
-			Bitmap temp = GameCore.GetGraphicEngine().LoadBitmap(bmpBitmapIDTable[0][i]);
-			
-			bmpAnimalBitmapT[0][i] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
+			for(int y = 0; y<MaxAnimationFrames; ++y)
+			{
+				Bitmap temp = GameCore.GetGraphicEngine().LoadBitmap(bmpBitmapIDTable[i][y]);
+				bmpAnimalBitmapT[i][y] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
+				MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap: " + i + y + "");
+			}
 		}
 		AnimalHeight = bmpAnimalBitmapT[0][0].getHeight();
 		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();	
@@ -109,8 +115,14 @@ public class Animal
 	
 	private int bmpBitmapIDTable[][] = 
 	{
-			{ R.drawable.l1, R.drawable.l1a, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l4a, R.drawable.l5, R.drawable.l6 },
-			{ R.drawable.l1, R.drawable.l1a, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l4a, R.drawable.l5, R.drawable.l6 },
+			{ R.drawable.u1, R.drawable.u2, R.drawable.u3, R.drawable.u4, R.drawable.u5, R.drawable.u6, R.drawable.u7, R.drawable.u8 },
+			{ R.drawable.ur1, R.drawable.ur2, R.drawable.ur3, R.drawable.ur4, R.drawable.ur5, R.drawable.ur6, R.drawable.ur7, R.drawable.ur8 },
+			{ R.drawable.r1, R.drawable.r2, R.drawable.r3, R.drawable.r4, R.drawable.r5, R.drawable.r6, R.drawable.r7, R.drawable.r8 },
+			{ R.drawable.rd1, R.drawable.rd2, R.drawable.rd3, R.drawable.rd4, R.drawable.rd5, R.drawable.rd6, R.drawable.rd7, R.drawable.rd8 },	
+			{ R.drawable.d1, R.drawable.d2, R.drawable.d3, R.drawable.d4, R.drawable.d5, R.drawable.d6, R.drawable.d7, R.drawable.d8 },	
+			{ R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1 },	
+			{ R.drawable.l1, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l5, R.drawable.l6, R.drawable.l7, R.drawable.l8 },
+			{ R.drawable.lu1, R.drawable.lu2, R.drawable.lu3, R.drawable.lu4, R.drawable.lu5, R.drawable.lu6, R.drawable.lu7, R.drawable.lu7 },	
 	};
 	
 	public void OnDraw(Canvas canvas)
@@ -118,10 +130,10 @@ public class Animal
 		if(UnitFlag == 1)
 			return;
 		
-		if(bmpAnimalBitmapT[0][AnimationCurrentState] == null)
+		if(bmpAnimalBitmapT[Orientation][AnimationCurrentState] == null)
 			return;
 	
-		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmapT[0][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
+		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmapT[Orientation][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
 	}
 	
 	public void OnUpdate(long diff)

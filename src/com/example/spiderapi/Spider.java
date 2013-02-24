@@ -8,11 +8,8 @@ public class Spider extends Animal
 	private int SluffTimer = 10000;
 
 	//Moving Variables	
-	private float vectorX, vectorY;
 	private int RandomWaypointTimer = 5000;
-	
-    MoveDirection Move = null;
-	
+		
 	//Pointers
 	private Worm worm = null;	
 
@@ -33,7 +30,7 @@ public class Spider extends Animal
 	
 		//Initialize Variable
 		MovementFlag = 1; //super
-		fSpeed = 0.5f;
+		fSpeed = 1;
 		Radius = 5;
 		
 		this.SetPosition(300,300);
@@ -118,6 +115,7 @@ public class Spider extends Animal
 		int randomX = r.nextInt((int) random);
 		int randomY = r.nextInt((int) random);
 		
+		/*
 		vectorX = vectorY = 0.0f;
 		
 		switch(r.nextInt(8))
@@ -147,7 +145,7 @@ public class Spider extends Animal
 			//fGoY = (randomY - (randomY - TerrY)) * 1;
 			//RandomWaypoint();
 		//if(fGoY > TerrY) fGoY = 0; 
-			//RandomWaypoint();
+			//RandomWaypoint();*/
 	}
 	
 	private void OnMove(long diff) 
@@ -171,33 +169,38 @@ public class Spider extends Animal
 			}
 			
 			setupMoveDirection();
-			setupMoveOrientation();
-			calculateMove();
-		}
-		    
-	    OnAnimate(diff);
+			if(OrientationTimer < diff)
+			{
+				if(setupMoveOrientation() == false)
+				{
+					OrientationTimer = 1000;
+				}
+				else 
+				{
+					calculateMove();
+					OnAnimate(diff);
+				}	
+			}OrientationTimer -= diff;
+		}    
 	}
 	
     private void calculateMove() 
     {
-		int fNewX, fNewY;	
-	    
-	    vectorX = vectorY = fNewX = fNewY = 0;  	
+		int fNewX, fNewY, vectorX, vectorY;	
+		
+		vectorX = vectorY = fNewX = fNewY = 0;  	
     	
-	    if(Move != null)
+		switch(MoveDirection)
 	    {
-			switch(Move)
-		    {
-		        case UpRight:   vectorX = 1.0f;     vectorY = -1.0f; break;
-		        case DownRight: vectorX = 1.0f;     vectorY = 1.0f;  break;
-		        case DownLeft:  vectorX = -1.0f;    vectorY = 1.0f;  break;
-		        case UpLeft:    vectorX = -1.0f;    vectorY = -1.0f; break;
-		        case Up: 		vectorY = -1.0f; 	break;
-		        case Down: 		vectorY = 1.0f; 	break;
-		        case Left: 		vectorX = -1.0f; 	break;
-		        case Right: 	vectorX = 1.0f; 	break;
-		        default: break;
-		    }
+	        case 1: vectorX = 1;     vectorY = -1; break;
+	        case 3: vectorX = 1;     vectorY = 1;  break;
+	        case 5: vectorX = -1;    vectorY = 1;  break;
+	        case 7: vectorX = -1;    vectorY = -1; break;
+	        case 0: vectorY = -1; 	break;
+	        case 4: vectorY = 1; 	break;
+	        case 6: vectorX = -1; 	break;
+	        case 2: vectorX = 1; 	break;
+	        default: break;
 	    }
 
 	    fNewX = PositionX;
@@ -216,48 +219,44 @@ public class Spider extends Animal
 	    SetPosition(fNewX, fNewY);		
 	}
 
-	private void setupMoveOrientation() 
-	{
-
-		
-	}
-
 	private void setupMoveDirection() 
 	{
 	    if(PositionX < wayPoint.PositionX && PositionY < wayPoint.PositionY)
-	    	Move = MoveDirection.DownRight;
+	    	MoveDirection = 3;
 	    if(PositionX > wayPoint.PositionX && PositionY < wayPoint.PositionY)
-	    	Move = MoveDirection.DownLeft;
+	    	MoveDirection = 5;
 	    if(PositionX < wayPoint.PositionX && PositionY > wayPoint.PositionY)
-	    	Move = MoveDirection.UpRight;
+	    	MoveDirection = 1;
 	    if(PositionX > wayPoint.PositionX && PositionY > wayPoint.PositionY)
-	    	Move = MoveDirection.UpLeft;
+	    	MoveDirection = 7;
 	    if(PositionX == wayPoint.PositionX && PositionY > wayPoint.PositionY)
-	    	Move = MoveDirection.Up;
+	    	MoveDirection = 0;
 	    if(PositionX == wayPoint.PositionX && PositionY < wayPoint.PositionY)
-	    	Move = MoveDirection.Down;
+	    	MoveDirection = 4;
 	    if(PositionX < wayPoint.PositionX && PositionY == wayPoint.PositionY)
-	    	Move = MoveDirection.Right;
+	    	MoveDirection = 2;
 	    if(PositionX > wayPoint.PositionX && PositionY == wayPoint.PositionY)
-	    	Move = MoveDirection.Left;		
+	    	MoveDirection = 6;
 	}
 
-	boolean CheckOrientation(MoveDirection MoveDir)
+	boolean CheckOrientation()
     {
-    	if(Orientation /*moveDirection*/ == MoveDir.ordinal())
+    	if(Orientation == MoveDirection)
     		return true;
     	
-    	//int a = moveDirection.ordinal();
-    	int b = MoveDir.ordinal();
+    	--Orientation;
+    	if(Orientation < 0)
+    		Orientation = 7;
+    	/*
     	int c = 0;
-    	if(Orientation > b)
+    	if(Orientation > MoveDirection)
     	{
-    		c = (Orientation - b);
+    		c = (Orientation - MoveDirection);
     	}
     	else
-    		c = (b - Orientation);
+    		c = (MoveDirection - Orientation);
     	
-    	if(c < 4)
+    	if(c > 4)
     	{
     		--Orientation;
     		if(Orientation == -1)
@@ -269,9 +268,14 @@ public class Spider extends Animal
     		if(Orientation == 8)
     			Orientation = 0;  		
     	}
-
+    	 */
     	return false;
     }	
+	
+	private boolean setupMoveOrientation() 
+	{
+		return CheckOrientation();
+	}	
 	
 	public void SetUpWaypoint(float GoXPoint, float GoYPoint, float GoZPoint)
 	{		

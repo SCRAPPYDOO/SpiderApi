@@ -8,7 +8,7 @@ public class GameEvent
 {
 	//OnTouch Actions
 	boolean IsWormBoxTaken = false;
-	Worm TouchedWorm = null;
+	public static Worm TouchedWorm = null;
 	Spider TouchedSpider = null;
 	static Spider spider    = null;
 	boolean CanGetMoveOrders = true;
@@ -83,9 +83,7 @@ public class GameEvent
 				bButton = null;
 				
 				if(AnimalMenager.GetSpider() != null)
-				{
-					AnimalMenager.GetSpider().SetMovementFlag(1);
-				
+				{			
 					if(CanGetMoveOrders)
 						AnimalMenager.GetSpider().SetUpWaypoint(fOnTouchX, fOnTouchY, 0);
 				}

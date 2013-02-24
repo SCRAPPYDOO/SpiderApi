@@ -12,9 +12,12 @@ public class DataMenager
 	
 	public static String GetDataFilename() { return filename; }
 	
+	private static SharedPreferences.Editor Editor = null;
+	
 	public static void OnCreate(SharedPreferences data)
 	{
 		Data = data;
+		Editor = Data.edit();
 	}
 	
 	public static void OnSave()
@@ -25,10 +28,9 @@ public class DataMenager
 		int X = AnimalMenager.GetSpider().GetX();
 		int Y = AnimalMenager.GetSpider().GetY();
 	
-		SharedPreferences.Editor Editor = Data.edit();
 		Editor.putInt("X", X);
 		Editor.putInt("Y", Y);
-		
+	
 		Editor.commit();	
 	}
 	
@@ -39,6 +41,24 @@ public class DataMenager
 		
 		int x = Data.getInt("X", 0);
 		int y = Data.getInt("Y", 0);
-		AnimalMenager.GetSpider().SetPosition(x, y);	
+		AnimalMenager.GetSpider().SetPosition(x, y);
+	}
+	
+	public static void SaveTerrarium()
+	{
+		if(Data == null) return;
+		
+		Editor.putInt("TerrariumTerrain", Terrarium.GetTerrain());
+		Editor.putInt("TerrariumAvailableT", Terrarium.GetAvailableTerrain());		
+		
+		Editor.commit();			
+	}
+	
+	public static void LoadTerrarium()
+	{
+		if(Data == null) return;
+		
+		Terrarium.SetTerrain(Data.getInt("TerrariumTerrain", 100));
+		Terrarium.SetAvailableT(Data.getInt("TerrariumAvailableT", 0));			
 	}
 }

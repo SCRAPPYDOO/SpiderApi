@@ -9,7 +9,7 @@ public class WormMenager
 		
 	static public void OnCreate()
 	{
-		MsgMenager.AddMassage(0, "Loading WormMenager");
+		MsgMenager.AddLoadingInfo(0, "Loading WormMenager");
 	}
 
 	static public boolean AddWorm(Worm worm/*null doda 1 robaka randomowo*/)

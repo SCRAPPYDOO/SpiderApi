@@ -11,16 +11,17 @@ public class MsgMenager
 	
 	
 	private static String stringtable[] = { null, null, null, null };
-	static private String X = "";
-	static private String Y = "";
-	static private String Z = "";
+	private static String X = "";
+	private static String Y = "";
+	private static String Z = "";
 	private static int fpsnumber[] = { 0,0,0,0 };
 
 	private static String LoadingInformation = "Loading ... ";
+	private static String TerrariumInformation[] = { "", "", "" };
 	
 	static public void OnUpdate(long timeDiff)
 	{
-
+		
 	}
 	
 	public static void OnDraw(Canvas canvas)
@@ -54,6 +55,11 @@ public class MsgMenager
 				String temp = "Spider Position: " + X + " : " + Y;
 				canvas.drawText(temp, 20, 575, paint);
 				
+				for(int i=0; i<3; ++i)
+				{
+					canvas.drawText(TerrariumInformation[i], 20, 600 + i*25, paint);
+				}
+				
 				break;
 			}
 			case MainMenu:
@@ -71,7 +77,7 @@ public class MsgMenager
 		fpsnumber[msgtype] = Fps;
 	}	
 
-	public static void AddMassage(int msgtype, String string) 
+	public static void AddLoadingInfo(int msgtype, String string) 
 	{
 		switch(msgtype)
 		{
@@ -80,5 +86,10 @@ public class MsgMenager
 		}
 		
 		stringtable[msgtype] = string;
+	}
+
+	public static void AddTerrariumInfo(int msgtype, String string) 
+	{
+		TerrariumInformation[msgtype] = string;		
 	}
 }

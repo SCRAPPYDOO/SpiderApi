@@ -19,14 +19,13 @@ public class Spider extends Animal
 	public Spider(int objectID)
 	{
 		ObjectID = objectID;
-		MsgMenager.AddMassage(0, "Loading Spider Bitmap");
 		this.OnCreate();
 	}	
 	
 	@Override
 	protected void OnCreate() 
 	{
-		MsgMenager.AddMassage(0, "Loading Spider Bitmap");
+		MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap");
 		
 		super.OnCreate();
 	

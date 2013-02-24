@@ -21,7 +21,7 @@ public class WormBox
 		
 	public static void OnCreate()
 	{	
-		MsgMenager.AddMassage(0, "Loading WormBox");
+		MsgMenager.AddLoadingInfo(0, "Loading WormBox");
 		
 		bmpBox = GameCore.GetGraphicEngine().LoadBitmap(WormboxBitmapID);	
 		bmpEmptyBox = GameCore.GetGraphicEngine().LoadBitmap(EmptyWormboxBitmapID);

@@ -35,8 +35,19 @@ public class Animal
 	//Positions
 	protected int PositionX = 50;
 	protected int PositionY = 50;
-	protected int GoX = 50;
-	protected int GoY = 50;
+	
+	Waypoint wayPoint = null;
+	
+	protected class Waypoint
+	{
+		public int PositionX = 0;
+		public int PositionY = 0;
+		public int PositionZ = 0;
+		
+		Waypoint(int x, int y) { PositionX = x; PositionY = y; }	
+		Waypoint(int x, int y, int z) { PositionX = x; PositionY = y; PositionZ = z; }
+	}
+
 	protected int AnimalHeight = 0;
 	protected int AnimalWidth = 0;
 	protected float fSpeed = 0.0f;
@@ -115,7 +126,7 @@ public class Animal
 	
 	public void OnUpdate(long diff)
 	{	
-		OnAnimate(diff);
+		
 	}	
 	
 	public void OnDelete() 
@@ -168,14 +179,14 @@ public class Animal
 		return false;
 	}
 		
-	private double GetDistance(float x1, float y1, float x2, float y2 )
+	protected double GetDistance(float x2, float y2 )
 	{ 
-	    return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)); 	
+	    return Math.sqrt((x2-PositionX)*(x2-PositionX) + (y2-PositionY)*(y2-PositionY)); 	
 	}	
 	
 	public boolean IsInRange(Animal animal) 
 	{
-		if(GetDistance(PositionX, PositionY, animal.GetX(),  animal.GetY()) < Radius + animal.Radius)
+		if(GetDistance(animal.GetX(),  animal.GetY()) < Radius + animal.Radius)
 			return true;
 	
 		return false;

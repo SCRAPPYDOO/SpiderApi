@@ -11,6 +11,8 @@ public class Spider extends Animal
 	private float vectorX, vectorY;
 	private int RandomWaypointTimer = 5000;
 	
+    MoveDirection Move = null;
+	
 	//Pointers
 	private Worm worm = null;	
 
@@ -32,7 +34,8 @@ public class Spider extends Animal
 		//Initialize Variable
 		MovementFlag = 1; //super
 		fSpeed = 0.5f;
-
+		Radius = 5;
+		
 		this.SetPosition(300,300);
 		this.SetupStats();
 	}
@@ -81,8 +84,7 @@ public class Spider extends Animal
 	    		worm = WormMenager.GetRandomWorm();
 	    		if(worm != null && !worm.IsInWormBox())
 	    		{
-		    		GoX = worm.GetX();
-		    		GoY = worm.GetY();
+	    			wayPoint = new Waypoint(worm.GetX(), worm.GetY());
 	    		}
 	    		else
 	    		{
@@ -132,7 +134,7 @@ public class Spider extends Animal
 	    }		
 		
 		//fGoX = (randomX - (randomX - TerrX)) * vectorX;
-		if(GoX < 0) GoX = 0;
+		//if(GoX < 0) GoX = 0;
 			//RandomWaypoint();
 			//fGoX = (randomX - (randomX - TerrX)) * 1;
 		//if(fGoX > TerrX) fGoX = 0;
@@ -141,7 +143,7 @@ public class Spider extends Animal
 			
 		//fGoY = (randomY - (randomY - TerrY)) * vectorY;
 		
-		if(GoY < 0) GoY = 0;
+		//if(GoY < 0) GoY = 0;
 			//fGoY = (randomY - (randomY - TerrY)) * 1;
 			//RandomWaypoint();
 		//if(fGoY > TerrY) fGoY = 0; 
@@ -156,52 +158,32 @@ public class Spider extends Animal
 		if(MovementFlag == 3)
 			return;		
 			
-		/*
-		if(worm == null)
+		if(wayPoint != null)
 		{
-	    	if(RandomWaypointTimer < diff)
-	    	{
-	    		RandomWaypoint();
-	    		RandomWaypointTimer = 10000;
-	    	}RandomWaypointTimer -= diff;	
+			if(this.IsOnPosition(wayPoint.PositionX, wayPoint.PositionY))
+			{
+				if(GetDistance(wayPoint.PositionX, wayPoint.PositionY) < 5/*Radius*/)
+				{
+					wayPoint = null;
+					MovementFlag = 0;
+					return;
+				}
+			}
+			
+			setupMoveDirection();
+			setupMoveOrientation();
+			calculateMove();
 		}
-		*/
-		
-	    if(PositionX == GoX && PositionY == GoY)
-	    {	
-	        //StopMove();
-	    	//set flag not moving
-	        return;
-	    }
- 
+		    
+	    OnAnimate(diff);
+	}
+	
+    private void calculateMove() 
+    {
 		int fNewX, fNewY;	
 	    
-	    vectorX = vectorY = fNewX = fNewY = 0;
-
-	    MoveDirection Move = null;
-
-	    if(PositionX < GoX && PositionY < GoY)
-	    	Move = MoveDirection.DownRight;
-	    if(PositionX > GoX && PositionY < GoY)
-	    	Move = MoveDirection.DownLeft;
-	    if(PositionX < GoX && PositionY > GoY)
-	    	Move = MoveDirection.UpRight;
-	    if(PositionX > GoX && PositionY > GoY)
-	    	Move = MoveDirection.UpLeft;
-	    if(PositionX == GoX && PositionY > GoY)
-	    	Move = MoveDirection.Up;
-	    if(PositionX == GoX && PositionY < GoY)
-	    	Move = MoveDirection.Down;
-	    if(PositionX < GoX && PositionY == GoY)
-	    	Move = MoveDirection.Right;
-	    if(PositionX > GoX && PositionY == GoY)
-	    	Move = MoveDirection.Left;	    
-	        
-	    //Prepare orientation
-	    //ChangeOrientationDueToWaypoint();
-	    //if(!CheckOrientation(Move))     	
-	    //	return;   
-	    
+	    vectorX = vectorY = fNewX = fNewY = 0;  	
+    	
 	    if(Move != null)
 	    {
 			switch(Move)
@@ -221,20 +203,46 @@ public class Spider extends Animal
 	    fNewX = PositionX;
 	    fNewY = PositionY;
 	    
-	    if(PositionX != GoX)
+	    if(PositionX != wayPoint.PositionX)
 	    {
 	    	fNewX = (int) (PositionX + (fSpeed*vectorX));
 	    }
 
-	    if(PositionY != GoY)
+	    if(PositionY != wayPoint.PositionY)
 	    {
 	    	fNewY = (int) (PositionY + (fSpeed*vectorY)); 
 	    }
 
-	    SetPosition(fNewX, fNewY);
+	    SetPosition(fNewX, fNewY);		
 	}
-	
-    boolean CheckOrientation(MoveDirection MoveDir)
+
+	private void setupMoveOrientation() 
+	{
+
+		
+	}
+
+	private void setupMoveDirection() 
+	{
+	    if(PositionX < wayPoint.PositionX && PositionY < wayPoint.PositionY)
+	    	Move = MoveDirection.DownRight;
+	    if(PositionX > wayPoint.PositionX && PositionY < wayPoint.PositionY)
+	    	Move = MoveDirection.DownLeft;
+	    if(PositionX < wayPoint.PositionX && PositionY > wayPoint.PositionY)
+	    	Move = MoveDirection.UpRight;
+	    if(PositionX > wayPoint.PositionX && PositionY > wayPoint.PositionY)
+	    	Move = MoveDirection.UpLeft;
+	    if(PositionX == wayPoint.PositionX && PositionY > wayPoint.PositionY)
+	    	Move = MoveDirection.Up;
+	    if(PositionX == wayPoint.PositionX && PositionY < wayPoint.PositionY)
+	    	Move = MoveDirection.Down;
+	    if(PositionX < wayPoint.PositionX && PositionY == wayPoint.PositionY)
+	    	Move = MoveDirection.Right;
+	    if(PositionX > wayPoint.PositionX && PositionY == wayPoint.PositionY)
+	    	Move = MoveDirection.Left;		
+	}
+
+	boolean CheckOrientation(MoveDirection MoveDir)
     {
     	if(Orientation /*moveDirection*/ == MoveDir.ordinal())
     		return true;
@@ -267,9 +275,9 @@ public class Spider extends Animal
 	
 	public void SetUpWaypoint(float GoXPoint, float GoYPoint, float GoZPoint)
 	{		
-		GoX = (int) GoXPoint;
-		GoY = (int) GoYPoint;
-		//fGoZ = GoZ;
+		wayPoint = new Waypoint((int)GoXPoint, (int)GoYPoint);
+		MovementFlag = 1;
+
 		worm = null;
 	}
 			

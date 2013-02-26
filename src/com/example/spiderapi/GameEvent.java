@@ -5,45 +5,47 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GameEvent 
-{
-	//OnTouch Actions
-	boolean IsWormBoxTaken = false;
-	public static Worm TouchedWorm = null;
+{	
+	private static Worm TouchedWorm = null;
+	public void SetTouchedWorm(Worm worm) { TouchedWorm = worm; }
+	public Worm GetTouchedWorm() { return TouchedWorm; }
+	
 	Spider TouchedSpider = null;
-	static Spider spider    = null;
 	boolean CanGetMoveOrders = true;
 	
 	//called when u touch the screen with this activity opened
 	public boolean onTouch(View v, MotionEvent event)
 	{	
-		float fOnTouchX = event.getX();
-		float fOnTouchY = event.getY();
+		int OnTouchX = (int) event.getX();
+		int OnTouchY = (int) event.getY();
 		int ev = event.getAction();
-		
-		Log.i("GameEvent", "OnTouch: " + fOnTouchX + " : " + fOnTouchY + "");
-		
-		InterfaceButton bButton = ButtonMenager.GetButtonOnPosition(fOnTouchX, fOnTouchY);
-		if(bButton != null)
-			Log.i("GameEvent", "OnTouch: Button On Position");
+			
+		InterfaceButton bButton = ButtonMenager.GetButtonOnPosition(OnTouchX, OnTouchY);
 		
 		if(TouchedWorm != null)
-			TouchedWorm.SetPosition((int)fOnTouchX, (int)fOnTouchY);
+			TouchedWorm.SetPosition(OnTouchX, OnTouchY);
 		
 		if(TouchedSpider != null)
-			TouchedSpider.SetPosition((int)fOnTouchX, (int)fOnTouchY);
+			TouchedSpider.SetPosition(OnTouchX, OnTouchY);
 				
 		switch(ev)
 		{
 			case MotionEvent.ACTION_DOWN:
 			{
-				TouchedWorm = WormMenager.GetWorm(fOnTouchX, fOnTouchY);
+				if(bButton != null) 
+				{ 
+					bButton.OnClickDown(event);
+					bButton = null;  
+				} 
+				
+				TouchedWorm = WormMenager.GetWorm(OnTouchX, OnTouchY);
 				
 				if(TouchedWorm != null)
 				{
 					TouchedWorm.SetIsInWormBox(false);
 				}
 				
-				if(AnimalMenager.GetSpider() != null && AnimalMenager.GetSpider().IsOnPosition(fOnTouchX, fOnTouchY) && TouchedWorm == null)
+				if(AnimalMenager.GetSpider() != null && AnimalMenager.GetSpider().IsOnPosition(OnTouchX, OnTouchY) && TouchedWorm == null)
 				{
 					TouchedSpider = AnimalMenager.GetSpider();
 					TouchedSpider.SetMovementFlag(3);
@@ -56,28 +58,10 @@ public class GameEvent
 			{			
 				if(bButton != null) 
 				{ 
-					bButton.OnClickUp();
-					Log.i("GameEvent", "OnTouch: Button OnClick");
+					bButton.OnClickUp(event);
 					bButton = null; 
-					break; 
 				} 
-				
-				if(WormBox.IsOnPosition(fOnTouchX, fOnTouchY))
-				{
-					if(WormBox.IsEmpty() && TouchedWorm == null)
-					{
-						//create new content activity with shop 
-						Worm worm = new Worm(0);
-						worm.SetIsInWormBox(true);
-					}
-					
-					if(TouchedWorm != null)
-					{
-						TouchedWorm.SetIsInWormBox(true);				
-					}
-				}				
-				
-				IsWormBoxTaken = false;
+							
 				TouchedWorm = null;
 				TouchedSpider = null;
 				bButton = null;
@@ -85,14 +69,14 @@ public class GameEvent
 				if(AnimalMenager.GetSpider() != null)
 				{			
 					if(CanGetMoveOrders)
-						AnimalMenager.GetSpider().SetUpWaypoint(fOnTouchX, fOnTouchY, 0);
+						AnimalMenager.GetSpider().SetUpWaypoint(OnTouchX, OnTouchY, 0);
 				}
 				break;
 			}
+			
 			default:
 				break;
 		}
-		Log.i("GameEvent", "OnTouch: End of method");
 		return true;
 	}	
 }

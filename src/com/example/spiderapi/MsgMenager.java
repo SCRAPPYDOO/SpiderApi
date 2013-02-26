@@ -18,6 +18,7 @@ public class MsgMenager
 
 	private static String LoadingInformation = "Loading ... ";
 	private static String TerrariumInformation[] = { "", "", "" };
+	private static String WormInBoxNumber = "Worm = ";
 	
 	static public void OnUpdate(long timeDiff)
 	{
@@ -39,7 +40,8 @@ public class MsgMenager
 		    	break;
 		    }
 			case Game:
-			{						
+			{		
+				canvas.drawText(WormInBoxNumber, GameCore.GetGraphicEngine().getWidth() - GameCore.GetGraphicEngine().getWidth()/3, GameCore.GetGraphicEngine().getHeight() - TextSizeLoadingScreen , paint);	
 				break;
 			}
 			case InGameMenu:
@@ -91,5 +93,10 @@ public class MsgMenager
 	public static void AddTerrariumInfo(int msgtype, String string) 
 	{
 		TerrariumInformation[msgtype] = string;		
+	}
+	
+	public static void AddWormBoxInfo(String string) 
+	{
+		WormInBoxNumber = "Worms = " + string;
 	}
 }

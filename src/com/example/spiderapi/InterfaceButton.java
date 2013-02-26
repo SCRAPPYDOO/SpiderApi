@@ -3,6 +3,7 @@ package com.example.spiderapi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class InterfaceButton 
 {
@@ -154,7 +155,7 @@ public class InterfaceButton
 		}		
 	}
 	
-	public void OnClickUp() 
+	public void OnClickUp(MotionEvent event) 
 	{
 		if(IsDrawAble == false)
 		{
@@ -176,7 +177,30 @@ public class InterfaceButton
 				else
 					GameCore.SetCurrentGameState(EnumGameState.InGameSpiderStat);			
 				break;
-			case 302: break;
+			case 302:
+				//If we are in worm shop we back to game
+				if(GameCore.GetCurrentGameState() == EnumGameState.InGameWormShop)
+				{
+					GameCore.SetCurrentGameState(EnumGameState.Game);
+				}
+				else
+				{
+					//If we push screen when we hold a worm and we are at the worm button
+					Worm temp = GameCore.GetGameEvent().GetTouchedWorm();
+					if(temp != null)
+					{
+						WormMenager.AddWormToBox(temp);
+						GameCore.GetGameEvent().SetTouchedWorm(null);
+					}
+					
+					if(WormBox.GetWormNumber() <= 0)
+					{
+						GameCore.SetCurrentGameState(EnumGameState.InGameWormShop);
+					}
+				}
+				
+				//if robakow 0 wlacz sklepik
+				break;
 			case 303:
 				if(GameCore.GetCurrentGameState() == EnumGameState.MainMenu)
 					GameCore.SetCurrentGameState(EnumGameState.Game);		
@@ -189,10 +213,14 @@ public class InterfaceButton
 		}	
 	}
 	
-	public void OnClickDown()
+	public void OnClickDown(MotionEvent event)
 	{		
 		switch(nButtonID)
 		{	
+			case 302:
+				Worm temp = WormMenager.GetWormFromBox((int)event.getX(), (int)event.getY());
+				if(temp != null)
+					GameCore.GetGameEvent().SetTouchedWorm(temp);
 			default: break;
 		}		
 	}

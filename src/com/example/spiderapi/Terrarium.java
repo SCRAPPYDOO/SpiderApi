@@ -24,7 +24,7 @@ public class Terrarium
 		
 		if(bmpTerrariumBitmap == null) return;
 			
-		bmpTerrariumBitmap = Bitmap.createScaledBitmap(bmpTerrariumBitmap, GameCore.GetGraphicEngine().getScreenWidth(), (int) (GameCore.GetGraphicEngine().getScreenHeight() - WormBox.GetHeight()), true);
+		bmpTerrariumBitmap = Bitmap.createScaledBitmap(bmpTerrariumBitmap, GameCore.GetGraphicEngine().getScreenWidth(), GameCore.GetGraphicEngine().getScreenHeight() - GameCore.GetGraphicEngine().getScreenHeight()/15, true);
 		
 		TerrariumWidth = bmpTerrariumBitmap.getWidth();
 		TerrariumHeight = bmpTerrariumBitmap.getHeight();

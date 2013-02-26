@@ -38,6 +38,7 @@ public class GameCore extends Activity implements OnTouchListener
 	public static GameMechanic GetGameMechanic() { return GameMechanicC; }
 	
 	public static GameEvent EventMenager = null;
+	public static GameEvent GetGameEvent() { return EventMenager; }
 	
 	private Thread ThreadOne = null;
 	private Thread ThreadTwo = null;

@@ -1,6 +1,7 @@
 package com.example.spiderapi;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class WormMenager 
 {
@@ -12,6 +13,7 @@ public class WormMenager
 		MsgMenager.AddLoadingInfo(0, "Loading WormMenager");
 	}
 
+	
 	static public boolean AddWorm(Worm worm/*null doda 1 robaka randomowo*/)
 	{
 		if(worm != null)
@@ -21,6 +23,7 @@ public class WormMenager
 				if(WormNumber[i] == null)
 				{
 					WormNumber[i] = worm;
+					Log.i("WormMenager", "Robak Dodany");
 					return true;	
 				}		
 			}	
@@ -28,6 +31,7 @@ public class WormMenager
 
 		return false;
 	}	
+	
 	
 	static public boolean RemoveWorm(Worm worm)
 	{
@@ -39,6 +43,7 @@ public class WormMenager
 				{
 					//WormNumber[i].OnRemove();
 					WormNumber[i] = null;
+					Log.i("WormMenager", "Robak Usuniety");
 					return true;	
 				}		
 			}	
@@ -107,6 +112,23 @@ public class WormMenager
 				WormNumber[i] = null;
 			}		
 		}	
+	}
+
+	public static Worm GetWormFromBox(int positionX, int positionY) 
+	{
+		if(!WormBox.isEmpty())
+		{
+			WormBox.DecreaseWormNumber();
+			Worm temp = new Worm(1, positionX, positionY);
+			return temp;
+		}
+		return null;
+	}
+
+	public static void AddWormToBox(Worm temp) 
+	{	
+		if(RemoveWorm(temp))
+			WormBox.AddWorm();
 	}	
 }
 

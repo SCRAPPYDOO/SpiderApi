@@ -1,14 +1,18 @@
 package com.example.spiderapi;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class Worm extends Animal
 {		
+	Bitmap WormBitmap = null;
 	private boolean IsInWormBox = false;
 
-	public Worm(int objectID) 
+	public Worm(int animalType, int positionX, int positionY) 
 	{
-		ObjectID = objectID;
+		AnimalType = animalType;
+		PositionX = positionX;
+		PositionY = positionY;
 		this.OnCreate();
 	}
 
@@ -17,9 +21,18 @@ public class Worm extends Animal
 	{	
 		super.OnCreate();
 
-		PositionX = (int) (WormBox.GetPositionX() + 14);
-		PositionY = (int) (WormBox.GetPositionY() + 53);
+		Bitmap temp = null;
+		GameGraphic graphic = GameCore.GetGraphicEngine();
+		temp = graphic.LoadBitmap(R.drawable.worm);
 
+		if(temp != null)
+		{
+			WormBitmap = Bitmap.createScaledBitmap(temp, 40, 40, false);
+		}
+		
+		AnimalHeight = WormBitmap.getHeight();
+		AnimalWidth = WormBitmap.getWidth();			
+		
 		WormMenager.AddWorm(this);
 	}
 
@@ -27,6 +40,14 @@ public class Worm extends Animal
 	public void OnDraw(Canvas canvas) 
 	{	
 		super.OnDraw(canvas);
+		
+		if(UnitFlag == 1)
+			return;		
+		
+		if(WormBitmap == null)
+			return;
+	
+		GameCore.GetGraphicEngine().OnDraw(canvas, WormBitmap, (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));		
 	}
 
 	@Override
@@ -35,13 +56,12 @@ public class Worm extends Animal
 		super.OnUpdate(diff);
 	}
 
-	@Override
-	public void OnRemove()
-	{
-		super.OnRemove();
+	public void OnDelete() 
+	{ 
+		UnitFlag = 1; 
 		WormMenager.RemoveWorm(this);
 	}
-
+	
 	public boolean IsInWormBox() 
 	{
 		return IsInWormBox;

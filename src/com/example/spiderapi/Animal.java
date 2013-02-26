@@ -1,6 +1,5 @@
 package com.example.spiderapi;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 enum UnitFlag
@@ -18,10 +17,6 @@ enum MovementFlag
 public class Animal 
 {		
 	//Graphics
-	protected int ObjectID = 0;
-	protected int bmpAnimalBitmapID = 0;
-	protected Bitmap bmpAnimalBitmap = null;
-	protected Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
 	protected int AnimationCurrentState = 0;
 	protected int AnimationTimer = 1000; //first animation
 	protected int AnimationNextTimer = 1000; // time between animation change
@@ -36,9 +31,7 @@ public class Animal
 	protected int PositionX = 50;
 	protected int PositionY = 50;
 	
-	Waypoint wayPoint = null;
-	
-	protected class Waypoint
+	public class Waypoint
 	{
 		public int PositionX = 0;
 		public int PositionY = 0;
@@ -46,8 +39,10 @@ public class Animal
 		
 		Waypoint(int x, int y) { PositionX = x; PositionY = y; }	
 		Waypoint(int x, int y, int z) { PositionX = x; PositionY = y; PositionZ = z; }
-	}
-
+	}	
+	
+	Waypoint wayPoint = null;
+	
 	protected int AnimalHeight = 0;
 	protected int AnimalWidth = 0;
 	protected float fSpeed = 0.0f;
@@ -55,26 +50,47 @@ public class Animal
 	protected long OrientationTimer = 1000;
 	protected int MoveDirection = 0;
 	protected int Radius = 0;
-
 	//Social
+	protected int AnimalType = 1;
 	protected int AnimalSize = 1;
-	protected int Health = 5;
-	protected int HungryTimer = 5000; //when spider whant to eat
+	protected int Health = 100;
+	protected int HungryTimer = 20000; //when spider whant to eat
+	
+	public Animal() 
+	{
+		this.OnCreate();
+	}
+	
+	public Animal(int animalType) 
+	{
+		AnimalType = animalType;
+		this.OnCreate();
+	}	
+	
+	protected void OnCreate() {}
+	public void OnDraw(Canvas canvas) {}
+	public void OnUpdate(long diff) {}	
+	public void OnDelete() { UnitFlag = 1; }		
+	
 	//Position Methods
 	public int GetX() { return PositionX; }
 	public int GetY() { return PositionY; }
 	public float GetW() { return AnimalWidth; }
 	public float GetH() { return AnimalHeight; }
+	public int GetType() { return AnimalType; }
 	
 	public void SetPosition(int posX, int posY) 
 	{ 
-		if(IsPositionInTerrarium(posX, posY) == true)
+		if(IsInTerrarium(posX, posY) == true)
 		{
 			PositionX = posX; PositionY = posY; 
 		}
 	}
 	
-	protected boolean IsPositionInTerrarium(int posX, int posY) 
+	//Social Methods
+	public int GetHealth() { return Health; }
+	
+	protected boolean IsInTerrarium(int posX, int posY) 
 	{
 		if(posX - 0.5*AnimalWidth > 0 && posX + 0.5*AnimalWidth < Terrarium.GetWidth()
 				&& posY - 0.5*AnimalHeight > 0 && posY  + 0.5*AnimalHeight < Terrarium.GetHeight())
@@ -82,77 +98,16 @@ public class Animal
 		return false;
 	}
 	
+	protected boolean IsInTerrarium(/*this*/) 
+	{
+		if(this.PositionX - 0.5 * this.AnimalWidth > 0 && this.PositionX + 0.5 * this.AnimalWidth < Terrarium.GetWidth()
+				&& this.PositionY - 0.5 * this.AnimalHeight > 0 && this.PositionY  + 0.5 * this.AnimalHeight < Terrarium.GetHeight())
+			return true;
+		return false;
+	}	
+	
 	public void SetMovementFlag(int Flag) { MovementFlag = Flag; }
 
-	public Animal() 
-	{
-		this.OnCreate();
-	}
-	
-	public Animal(int objectID) 
-	{
-		ObjectID = objectID;
-		this.OnCreate();
-	}
-	
-	//Social Methods
-	public int GetHealth() { return Health; }
-	
-	protected void OnCreate()
-	{	
-		for(int i = 0;i<MaxAnimationsDirection; ++i)
-		{
-			for(int y = 0; y<MaxAnimationFrames; ++y)
-			{
-				Bitmap temp = GameCore.GetGraphicEngine().LoadBitmap(bmpBitmapIDTable[i][y]);
-				bmpAnimalBitmapT[i][y] = Bitmap.createScaledBitmap(temp, 200, 200, false);	
-				MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap: " + i + y + "");
-			}
-		}
-		AnimalHeight = bmpAnimalBitmapT[0][0].getHeight();
-		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();	
-	}
-	
-	private int bmpBitmapIDTable[][] = 
-	{
-			{ R.drawable.u1, R.drawable.u2, R.drawable.u3, R.drawable.u4, R.drawable.u5, R.drawable.u6, R.drawable.u7, R.drawable.u8 },
-			{ R.drawable.ur1, R.drawable.ur2, R.drawable.ur3, R.drawable.ur4, R.drawable.ur5, R.drawable.ur6, R.drawable.ur7, R.drawable.ur8 },
-			{ R.drawable.r1, R.drawable.r2, R.drawable.r3, R.drawable.r4, R.drawable.r5, R.drawable.r6, R.drawable.r7, R.drawable.r8 },
-			{ R.drawable.rd1, R.drawable.rd2, R.drawable.rd3, R.drawable.rd4, R.drawable.rd5, R.drawable.rd6, R.drawable.rd7, R.drawable.rd8 },	
-			{ R.drawable.d1, R.drawable.d2, R.drawable.d3, R.drawable.d4, R.drawable.d5, R.drawable.d6, R.drawable.d7, R.drawable.d8 },	
-			{ R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1 },	
-			{ R.drawable.l1, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l5, R.drawable.l6, R.drawable.l7, R.drawable.l8 },
-			{ R.drawable.lu1, R.drawable.lu2, R.drawable.lu3, R.drawable.lu4, R.drawable.lu5, R.drawable.lu6, R.drawable.lu7, R.drawable.lu7 },	
-	};
-	
-	public void OnDraw(Canvas canvas)
-	{	
-		if(UnitFlag == 1)
-			return;
-		
-		if(bmpAnimalBitmapT[Orientation][AnimationCurrentState] == null)
-			return;
-	
-		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmapT[Orientation][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
-	}
-	
-	public void OnUpdate(long diff)
-	{	
-		
-	}	
-	
-	public void OnDelete() 
-	{
-		bmpAnimalBitmap = null;
-		
-		for(int x = 0;x<MaxAnimationFrames; ++x)
-		{
-			for(int z = 0;z<MaxAnimationsDirection; ++z)
-			{
-				bmpAnimalBitmapT[x][z] = null;	
-			}
-		}		
-	}	
 
 	public void OnAnimate(long diff)
 	{
@@ -166,12 +121,7 @@ public class Animal
 			AnimationTimer = AnimationNextTimer;
 		}AnimationTimer -= diff;
 	}
-	
-	public void OnRemove()	
-	{
-		UnitFlag = 1;
-	}
-	
+
 	public boolean IsOnPosition(float fOnTouchX, float fOnTouchY)
 	{
 		if(fOnTouchX > PositionX - 0.5*AnimalWidth && fOnTouchX < PositionX + 0.5*AnimalWidth

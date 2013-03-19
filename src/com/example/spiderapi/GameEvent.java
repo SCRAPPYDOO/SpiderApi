@@ -1,6 +1,5 @@
 package com.example.spiderapi;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

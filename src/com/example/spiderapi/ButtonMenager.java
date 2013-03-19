@@ -87,7 +87,6 @@ public class ButtonMenager
 
 	private static void RemoveButtons() 
 	{
-		if(!ButtonList.isEmpty())
-			ButtonList.clear();	
+		ButtonList.clear();	
 	}
 }

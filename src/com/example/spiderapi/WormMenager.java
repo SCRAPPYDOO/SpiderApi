@@ -1,65 +1,47 @@
 package com.example.spiderapi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class WormMenager 
 {
-	static Worm WormNumber[] = { null, null, null, null, null, null, null, null, null, null };
-	static int MaxWormsInTerr = 10;
+	private static final List<Worm> WormList = new ArrayList<Worm>();
 		
 	static public void OnCreate()
 	{
 		MsgMenager.AddLoadingInfo(0, "Loading WormMenager");
 	}
-
 	
-	static public boolean AddWorm(Worm worm/*null doda 1 robaka randomowo*/)
+	static public boolean AddWorm(Worm NewWorm)
 	{
-		if(worm != null)
+		if(WormList.contains(NewWorm))
 		{
-			for(int i=0; i<MaxWormsInTerr; ++i)
-			{
-				if(WormNumber[i] == null)
-				{
-					WormNumber[i] = worm;
-					Log.i("WormMenager", "Robak Dodany");
-					return true;	
-				}		
-			}	
+			return false;
 		}
-
-		return false;
+		else
+		{
+			WormList.add(NewWorm);
+			return true;
+		}
 	}	
 	
-	
-	static public boolean RemoveWorm(Worm worm)
+	static public boolean RemoveWorm(Worm WormToRemove)
 	{
-		if(worm != null)
-		{
-			for(int i=0; i<MaxWormsInTerr; ++i)
-			{
-				if(WormNumber[i] == worm)
-				{
-					//WormNumber[i].OnRemove();
-					WormNumber[i] = null;
-					Log.i("WormMenager", "Robak Usuniety");
-					return true;	
-				}		
-			}	
-		}
-			
+		if(WormList.remove(WormToRemove))
+			return true;
 		return false;		
 	}
 	
 	static public Worm GetWorm(float fOnTouchX, float fOnTouchY)
 	{
-		for(int i=0; i<MaxWormsInTerr; ++i)
-		{
-			if(WormNumber[i] != null)
+		for(int i=0; i<WormList.size(); ++i)
+		{		
+			if(WormList.get(i) != null)
 			{
-				if(WormNumber[i].IsOnPosition(fOnTouchX, fOnTouchY))	
-					return WormNumber[i];	
+				if(WormList.get(i).IsOnPosition(fOnTouchX, fOnTouchY))	
+					return WormList.get(i);	
 			}		
 		}	
 
@@ -68,50 +50,44 @@ public class WormMenager
 	
 	static public Worm GetRandomWorm()
 	{		
-		for(int i=0; i<MaxWormsInTerr; ++i)
+		for(int i=0; i<WormList.size(); ++i)
 		{
-			if(WormNumber[i] != null)
+			if(WormList.get(i) != null)
 			{
-				return WormNumber[i];	
+				return WormList.get(i);	
 			}		
 		}	
 	    return null;
 	}	
 	
-	static public int GetWormsNumber() { return MaxWormsInTerr; }
-	static public Worm GetWormOnListPosition(int i) { return WormNumber[i]; }
+	static public int GetWormsNumber() { return WormList.size(); }
+	static public Worm GetWormOnListPosition(int i) { return WormList.get(i); }
 	
 	static public void OnUpdate(long diff)
 	{		
-		for(int i=0; i<MaxWormsInTerr; ++i)
+		for(int i=0; i<WormList.size(); ++i)
 		{
-			if(WormNumber[i] != null)
+			if(WormList.get(i) != null)
 			{
-				WormNumber[i].OnUpdate(diff);
+				WormList.get(i).OnUpdate(diff);
 			}		
 		}
 	}
 	
 	static public void OnDraw(Canvas canvas) 
 	{			
-		for(int i=0; i<MaxWormsInTerr; ++i)
+		for(int i=0; i<WormList.size(); ++i)
 		{
-			if(WormNumber[i] != null)
+			if(WormList.get(i) != null)
 			{
-				WormNumber[i].OnDraw(canvas);
+				WormList.get(i).OnDraw(canvas);
 			}		
 		}
 	}
 
 	public static void OnDelete() 
 	{
-		for(int i=0; i<MaxWormsInTerr; ++i)
-		{
-			if(WormNumber[i] != null)
-			{
-				WormNumber[i] = null;
-			}		
-		}	
+		WormList.clear();
 	}
 
 	public static Worm GetWormFromBox(int positionX, int positionY) 
@@ -125,10 +101,14 @@ public class WormMenager
 		return null;
 	}
 
-	public static void AddWormToBox(Worm temp) 
+	public static boolean AddWormToBox(Worm temp) 
 	{	
 		if(RemoveWorm(temp))
+		{
 			WormBox.AddWorm();
+			return true;
+		}
+		return false;
 	}	
 }
 

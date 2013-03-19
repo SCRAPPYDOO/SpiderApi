@@ -8,7 +8,7 @@ public class AnimalMenager
 
 	public static void OnCreate() 
 	{
-		//LoadSpider();		
+		LoadSpider();		
 	}	
 	
 	private static void LoadSpider() 

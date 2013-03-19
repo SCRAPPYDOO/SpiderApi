@@ -9,7 +9,8 @@ public class Spider extends Animal
 	private int SluffLevel = 0;//wylinka ze slownika :D
 	private int SluffTimer = 10000;
 
-	private Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
+	private Bitmap bmpAnimalBitmap = null;
+	//private Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
 	//Moving Variables	
 	
 	//Pointers
@@ -29,6 +30,15 @@ public class Spider extends Animal
 		
 		MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap");
 			
+		bmpAnimalBitmap = GameCore.GetGraphicEngine().LoadBitmap(R.drawable.l1);
+		
+		bmpAnimalBitmap = Bitmap.createScaledBitmap(bmpAnimalBitmap, 200, 200, false);
+		
+		
+		AnimalHeight = bmpAnimalBitmap.getHeight();
+		AnimalWidth = bmpAnimalBitmap.getWidth();	
+		
+		/*
 		for(int i = 0;i<MaxAnimationsDirection; ++i)
 		{
 			for(int y = 0; y<MaxAnimationFrames; ++y)
@@ -50,6 +60,7 @@ public class Spider extends Animal
 		
 		AnimalHeight = bmpAnimalBitmapT[0][0].getHeight();
 		AnimalWidth = bmpAnimalBitmapT[0][0].getWidth();	
+		*/
 		
 		//Initialize Variable
 		MovementFlag = 1; //super
@@ -80,23 +91,25 @@ public class Spider extends Animal
 		if(UnitFlag == 1)
 			return;		
 		
-		if(bmpAnimalBitmapT[Orientation][AnimationCurrentState] == null)
+		if(bmpAnimalBitmap == null)
 			return;
 	
-		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmapT[Orientation][AnimationCurrentState], (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
+		GameCore.GetGraphicEngine().OnDraw(canvas, bmpAnimalBitmap, (int)(PositionX - 0.5*AnimalWidth), (int)(PositionY - 0.5*AnimalHeight));
 	}
 
 	@Override
 	public void OnDelete() 
 	{
+		/*
 		for(int x = 0;x<MaxAnimationFrames; ++x)
 		{
 			for(int z = 0;z<MaxAnimationsDirection; ++z)
 			{
 				bmpAnimalBitmapT[x][z] = null;	
 			}
-		}			
-		
+		}	
+		*/		
+		bmpAnimalBitmap = null;
 		worm = null;
 		super.OnDelete();
 	}

@@ -2,7 +2,6 @@ package com.example.spiderapi;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class InterfaceButton 
@@ -14,8 +13,6 @@ public class InterfaceButton
 	private int nButtonID= 0;
 	private int nBitmapID= 0;
 	private Bitmap bmpBitmap = null;
-	private boolean IsDrawAble = true;
-	private EnumGameState gamestateToDraw = EnumGameState.MainMenu;
 	
 	public InterfaceButton(int ButtonID)
 	{
@@ -37,24 +34,8 @@ public class InterfaceButton
 		nHeight = bmpBitmap.getHeight();
 
 		SetUpPosition();
-		
-		//SetGameStateToDraw();		
-		
+				
 		ButtonMenager.AddButton(this);
-	}
-
-	private void SetGameStateToDraw() 
-	{
-		EnumGameState GameStateTable[] =
-		{
-			EnumGameState.Game,
-			EnumGameState.Game,
-			EnumGameState.Game,
-		};
-		
-		if(GameStateTable[nButtonID-300] != null)
-			gamestateToDraw = GameStateTable[nButtonID-300];
-		
 	}
 
 	private void SetUpPosition() 
@@ -122,29 +103,13 @@ public class InterfaceButton
 
 	public void OnDraw(Canvas canvas) 
 	{	
-		if(bmpBitmap != null && IsDrawAble == true)
+		if(bmpBitmap != null)
 			GameCore.GetGraphicEngine().OnDraw(canvas, bmpBitmap, nPositionX, nPositionY);
 	}
 
 	public void OnUpdate(long diff)
 	{
-		//Check if  we can draw to screen and be clicked
-		IsDrawAble = true;
-		
-		/*
-		EnumGameState CoreState = GameCore.GetCurrentGameState();
-		
-		switch(nButtonID)
-		{
-			case 300: if(CoreState == EnumGameState.InGameMenu || CoreState == EnumGameState.Game || CoreState == EnumGameState.InGameSpiderStat || CoreState == EnumGameState.InGameWormShop); IsDrawAble = true; break;
-			case 301: 	
-		
-			default:
-				if(CoreState == gamestateToDraw)
-					IsDrawAble = true;
-				break;
-		}
-		*/
+
 	}
 	
 	public void OnClickMove()
@@ -156,13 +121,7 @@ public class InterfaceButton
 	}
 	
 	public void OnClickUp(MotionEvent event) 
-	{
-		if(IsDrawAble == false)
-		{
-			Log.i("InterfaceButton", "OnClickUp: " + nButtonID + " Button nie jest odblokowany: IsDrawAble == false");
-			return;
-		}
-		
+	{	
 		switch(nButtonID)
 		{
 			case 300: 

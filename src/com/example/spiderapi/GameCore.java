@@ -48,7 +48,6 @@ public class GameCore extends Activity implements OnTouchListener
 	
 	//Actual Gamestate
 	private static EnumGameState CurrentGameState = EnumGameState.LaunchingScreen;
-	private static EnumGameState LastGameState = EnumGameState.LaunchingScreen;	
 	
 	private static boolean IsGameLoading = false;
 	
@@ -206,49 +205,45 @@ public class GameCore extends Activity implements OnTouchListener
 	
 	public static void SetCurrentGameState(EnumGameState GameState) 
 	{
-		LastGameState = CurrentGameState;
+		EnumGameState LastGameState = CurrentGameState;
 		EnumGameState NextGameState = GameState;
-		CurrentGameState = EnumGameState.LoadingScreen;
-		CurrentGameState = GameState; 
-		//Do everything from old state
-	
-		//If we back from game to menu
-		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game)
-		{
-			IsGameLoading = true;
-			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
-			//UnloadMainMenu();
-			LoadGame();
-			IsGameLoading = false;
-			CurrentGameState = EnumGameState.Game;
-		}
-		
-		if(LastGameState == EnumGameState.Game && CurrentGameState == EnumGameState.MainMenu )
-		{
-			IsGameLoading = true;
-			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
-			UnloadGame();
-			//LoadMainMenu():
-			IsGameLoading = false;
-			
-		}
-		
-		if(CurrentGameState == EnumGameState.MainMenuDevelopers)
-		{
-
-		}
 		
 		BackgroundMenager.LoadBackground(CurrentGameState);
-		ButtonMenager.CreateButtons(CurrentGameState);
-		Log.i("GameCore", "Switched gamestate to " + CurrentGameState + "");
-		
+		//Do everything from old state
+	
 		switch(CurrentGameState)
 		{
 			case LaunchingScreen: if(GameMechanicC != null) GameMechanicC.SetLauncherTimer(10000); break;
 
 			default:
 				break;
+		}		
+		
+		CurrentGameState = EnumGameState.LoadingScreen;
+		
+		//If we back from game to menu
+		if(LastGameState == EnumGameState.MainMenu && NextGameState == EnumGameState.Game)
+		{
+			IsGameLoading = true;
+			//UnloadMainMenu();
+			LoadGame();
+			IsGameLoading = false;
 		}
+		
+		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.MainMenu )
+		{
+			IsGameLoading = true;
+			UnloadGame();
+			//LoadMainMenu():
+			IsGameLoading = false;		
+		}
+	
+		CurrentGameState = NextGameState;
+		
+		BackgroundMenager.LoadBackground(NextGameState);
+		ButtonMenager.CreateButtons(NextGameState);
+		
+		Log.i("GameCore", "Switched gamestate to " + CurrentGameState + "");
 	}
 		
 	private static void UnloadGame() 

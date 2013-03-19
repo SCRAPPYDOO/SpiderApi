@@ -31,9 +31,7 @@ public class Spider extends Animal
 		MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap");
 			
 		bmpAnimalBitmap = GameCore.GetGraphicEngine().LoadBitmap(R.drawable.l1);
-		
 		bmpAnimalBitmap = Bitmap.createScaledBitmap(bmpAnimalBitmap, 200, 200, false);
-		
 		
 		AnimalHeight = bmpAnimalBitmap.getHeight();
 		AnimalWidth = bmpAnimalBitmap.getWidth();	

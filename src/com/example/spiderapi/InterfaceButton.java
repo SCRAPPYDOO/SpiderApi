@@ -78,6 +78,15 @@ public class InterfaceButton
 				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
 				nPositionY = (int) (ScreenHeight * 0.5 + 150);
 				break;	
+			
+			case 307:
+			case 308:
+			case 309:
+			case 310:
+			case 311:	
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (100 + ((nButtonID - 306) * nHeight + 50 ));
+				break;	
 				
 			default: break;
 		}
@@ -94,6 +103,11 @@ public class InterfaceButton
 			case 304:
 			case 305:
 			case 306:
+			case 307:
+			case 308:
+			case 309:
+			case 310:
+			case 311:
 				bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, GameCore.GetGraphicEngine().getScreenWidth()/3, GameCore.GetGraphicEngine().getScreenHeight()/15, true);
 				break;
 				
@@ -161,12 +175,19 @@ public class InterfaceButton
 				break;
 			case 303:
 				if(GameCore.GetCurrentGameState() == EnumGameState.MainMenu)
-					GameCore.SetCurrentGameState(EnumGameState.Game);		
+					GameCore.SetCurrentGameState(EnumGameState.TerrariumSwitch);		
 				break;
 			case 304: GameCore.SetCurrentGameState(EnumGameState.MainMenuOptions); break; //launch main menu options
 			case 305: GameCore.SetCurrentGameState(EnumGameState.MainMenuDevelopers); break; //tworcy :DD
 			case 306: GameCore.QuitFromGame(); break; //Quit from game
-				
+			
+			//Terrarium Switch Buttons
+			case 307: GameCore.LoadTerrarium(0); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+			case 308: GameCore.LoadTerrarium(1); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+			case 309: GameCore.LoadTerrarium(2); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+			case 310: GameCore.LoadTerrarium(3); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+			case 311: GameCore.LoadTerrarium(4); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+		
 			default: break;
 		}	
 	}
@@ -201,5 +222,12 @@ public class InterfaceButton
 		R.drawable.mainmenu_button_options,
 		R.drawable.mainmenu_button_dev,
 		R.drawable.mainmenu_button_quit,
+		//Terrariumswitch buttons
+		R.drawable.terrariumswitch_terrariumbutton,
+		R.drawable.terrariumswitch_terrariumbutton,
+		R.drawable.terrariumswitch_terrariumbutton,
+		R.drawable.terrariumswitch_terrariumbutton,
+		R.drawable.terrariumswitch_terrariumbutton,
+		//
 	};
 }

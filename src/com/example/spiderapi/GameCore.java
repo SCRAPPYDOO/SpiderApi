@@ -24,9 +24,11 @@ enum EnumGameState
 	InGameSpiderStat,
 	InGameWormShop,
 	MainMenu,
-	LaunchingScreen,
-	MainMenuOptions,
-	MainMenuDevelopers,
+	LaunchingScreen,		//6
+	MainMenuOptions,		//7
+	MainMenuDevelopers,  	//8
+	TerrariumSwitch,  		//9
+	//Add new here
 }
 
 public class GameCore extends Activity implements OnTouchListener
@@ -48,6 +50,7 @@ public class GameCore extends Activity implements OnTouchListener
 	
 	//Actual Gamestate
 	private static EnumGameState CurrentGameState = EnumGameState.LaunchingScreen;
+	private static int CurrentTerrarium = 0;
 	
 	private static boolean IsGameLoading = false;
 	
@@ -90,6 +93,7 @@ public class GameCore extends Activity implements OnTouchListener
 		{
 			case MainMenuOptions:
 			case MainMenuDevelopers: 
+			case TerrariumSwitch:
 			case Game: SetCurrentGameState(EnumGameState.MainMenu); break;
 			
 			case LaunchingScreen: break;
@@ -208,14 +212,14 @@ public class GameCore extends Activity implements OnTouchListener
 		EnumGameState LastGameState = CurrentGameState;
 		EnumGameState NextGameState = GameState;
 		
-		BackgroundMenager.LoadBackground(CurrentGameState);
-		//Do everything from old state
-	
 		if(LastGameState != EnumGameState.LaunchingScreen)
 			CurrentGameState = EnumGameState.LoadingScreen;
 		
+		BackgroundMenager.LoadBackground(CurrentGameState);
+		//Do everything from old state
+	
 		//If we back from game to menu
-		if(LastGameState == EnumGameState.MainMenu && NextGameState == EnumGameState.Game)
+		if(LastGameState == EnumGameState.TerrariumSwitch && NextGameState == EnumGameState.Game)
 		{
 			IsGameLoading = true;
 			//UnloadMainMenu();
@@ -223,7 +227,7 @@ public class GameCore extends Activity implements OnTouchListener
 			IsGameLoading = false;
 		}
 		
-		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.MainMenu )
+		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.TerrariumSwitch )
 		{
 			IsGameLoading = true;
 			UnloadGame();
@@ -260,5 +264,10 @@ public class GameCore extends Activity implements OnTouchListener
 	public static void QuitFromGame() 
 	{
 		IsRunning = false;
+	}
+
+	public static void LoadTerrarium(int i) 
+	{
+		CurrentTerrarium = i;
 	}	
 }

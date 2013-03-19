@@ -27,9 +27,9 @@ public class BackgroundMenager
 		LoadBackground(GameCore.GetCurrentGameState()); 
 	}
 	
-	public static void LoadBackground(EnumGameState loadingscreen) 
+	public static void LoadBackground(EnumGameState background) 
 	{
-		switch(loadingscreen)
+		switch(background)
 		{
 			case LaunchingScreen: bmpDrawableBitmap = bmpLoadingScreen; break;
 			case LoadingScreen: bmpDrawableBitmap = bmpLoadingScreen; break;
@@ -38,6 +38,7 @@ public class BackgroundMenager
 			case InGameSpiderStat:
 			case InGameWormShop:
 			case MainMenu:
+				bmpDrawableBitmap = null;
 				break;
 				
 			default:

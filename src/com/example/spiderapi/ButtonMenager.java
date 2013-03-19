@@ -3,6 +3,7 @@ package com.example.spiderapi;
 import java.util.ArrayList;
 import java.util.List;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class ButtonMenager 
 {
@@ -15,7 +16,6 @@ public class ButtonMenager
 		for(int i=0; i<ButtonList.size(); ++i)
 		{
 			temp = ButtonList.get(i);
-			
 			if(temp != null && temp.IsOnPosition(PositionX, PositionY))
 				return temp;
 		}
@@ -49,7 +49,7 @@ public class ButtonMenager
 		int ButtonStateTable[][] = // 0 - GameState | 1 - Button ID
 		{
 			//Game Buttons
-			{ 1, 300 },
+			{ 1, 300 }, 
 			{ 1, 301 },
 			{ 1, 302 },
 			//In Game Menu
@@ -69,11 +69,17 @@ public class ButtonMenager
 			{ 5, 304 },
 			{ 5, 305 },
 			{ 5, 306 },
+			//TerrariumSwitch
+			{ 9, 307 },
+			{ 9, 308 },
+			{ 9, 309 },
+			{ 9, 310 },
+			{ 9, 311 },
 		};			
 		
 		// !! WARNING !! //
 		// Always change table size when adding buttons
-		int ButtonTableSize = 16;
+		int ButtonTableSize = 21;
 		// !! WARNING !! ??
 		
 		int state = currentGameState.ordinal();

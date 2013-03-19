@@ -2,7 +2,7 @@ package com.example.spiderapi;
 
 public class WormBox 
 {
-	private static int NumberOfWorm = 2;
+	private static int NumberOfWorm = 5;
 			
 	public static void OnCreate()
 	{	

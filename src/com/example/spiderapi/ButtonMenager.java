@@ -1,18 +1,23 @@
 package com.example.spiderapi;
 
+import java.util.ArrayList;
+import java.util.List;
 import android.graphics.Canvas;
 
 public class ButtonMenager 
 {
-	private static int nButtonTableSize = 10;
-	private static InterfaceButton ButtonTable[] = { null, null, null, null, null, null, null, null, null ,null };
+	private static final List<InterfaceButton> ButtonList = new ArrayList<InterfaceButton>();
 	
 	public static InterfaceButton GetButtonOnPosition(float PositionX, float PositionY)
 	{
-		for(int i=0; i<nButtonTableSize; ++i)
+		InterfaceButton temp = null;
+		
+		for(int i=0; i<ButtonList.size(); ++i)
 		{
-			if(ButtonTable[i] != null && ButtonTable[i].IsOnPosition(PositionX, PositionY))
-				return ButtonTable[i];
+			temp = ButtonList.get(i);
+			
+			if(temp != null && temp.IsOnPosition(PositionX, PositionY))
+				return temp;
 		}
 		
 		return null;
@@ -20,79 +25,69 @@ public class ButtonMenager
 
 	public static void AddButton(InterfaceButton NewButton) 
 	{
-		if(NewButton != null)
-		{
-			for(int i=0; i<nButtonTableSize; ++i)
-			{
-				if(ButtonTable[i] == null)
-				{
-					ButtonTable[i] = NewButton;
-					return;
-				}		
-			}	
-		}	
+		ButtonList.add(NewButton);
+	}
+	
+	public static void RemoveButton(InterfaceButton NewButton) 
+	{
+		ButtonList.remove(NewButton);
 	}
 	
 	public static void OnDraw(Canvas canvas)
 	{
-		for(int i=0; i<nButtonTableSize; ++i)
+		for(int i=0; i<ButtonList.size(); ++i)
 		{
-			if(ButtonTable[i] != null)
-				ButtonTable[i].OnDraw(canvas);
+			if(ButtonList.get(i) != null)
+				ButtonList.get(i).OnDraw(canvas);
 		}	
 	}
 
 	public static void CreateButtons(EnumGameState currentGameState)
-	{
+	{	
 		RemoveButtons();
-		/*
-		int ButtonTable[][] =
-		{
-			{ 1,300 },
-			{ 1,301 },
-			{ 1,302 },
-			{ , },
-			{ , },
-			{ , },
-			{ , },
-			{ , },
-			{ , },
-			{ , },
-			//{ , },
-		}
-		*/
 		
-		switch(currentGameState)
+		int ButtonStateTable[][] = // 0 - GameState | 1 - Button ID
 		{
-			case MainMenu:
-			{
-				new InterfaceButton(303);
-				new InterfaceButton(304);
-				new InterfaceButton(305);
-				new InterfaceButton(306);
-				break;
-			}
-			case Game:
-			case InGameMenu:
-			case InGameSpiderStat:
-			case InGameWormShop:
-			{
-				new InterfaceButton(300);
-				new InterfaceButton(301);
-				new InterfaceButton(302);
-				break;
-			}
+			//Game Buttons
+			{ 1, 300 },
+			{ 1, 301 },
+			{ 1, 302 },
+			//In Game Menu
+			{ 2, 300 },
+			{ 2, 301 },
+			{ 2, 302 },
+			//In Game Spidet Stats
+			{ 3, 300 },
+			{ 3, 301 },
+			{ 3, 302 },
+			//In Game Shop
+			{ 4, 300 },
+			{ 4, 301 },
+			{ 4, 302 },
+			//Main Menu
+			{ 5, 303 },
+			{ 5, 304 },
+			{ 5, 305 },
+			{ 5, 306 },
+		};			
 		
-			default:
-				break;
+		// !! WARNING !! //
+		// Always change table size when adding buttons
+		int ButtonTableSize = 16;
+		// !! WARNING !! ??
+		
+		int state = currentGameState.ordinal();
+		
+		for(int i=0; i<ButtonTableSize; ++i)
+		{
+			if(ButtonStateTable[i][0] == state)
+				new InterfaceButton(ButtonStateTable[i][1]);
 		}
 	}
 
 	private static void RemoveButtons() 
 	{
-		for(int i=0; i<nButtonTableSize; ++i)
-		{
-			ButtonTable[i] = null;
-		}		
+		if(!ButtonList.isEmpty())
+			ButtonList.clear();	
 	}
 }

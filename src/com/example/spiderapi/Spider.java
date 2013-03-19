@@ -11,7 +11,6 @@ public class Spider extends Animal
 
 	private Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
 	//Moving Variables	
-	private int RandomWaypointTimer = 5000;
 	
 	//Pointers
 	private Worm worm = null;	
@@ -29,11 +28,7 @@ public class Spider extends Animal
 		super.OnCreate();
 		
 		MsgMenager.AddLoadingInfo(0, "Loading Spider Bitmap");
-		
-		GameGraphic graphic = GameCore.GetGraphicEngine();
-		
-		if(graphic == null) return;
-		
+			
 		for(int i = 0;i<MaxAnimationsDirection; ++i)
 		{
 			for(int y = 0; y<MaxAnimationFrames; ++y)
@@ -42,7 +37,7 @@ public class Spider extends Animal
 				Bitmap temp = null;
 
 				MsgMenager.AddLoadingInfo(0, "Ladownaie Mapy");
-				temp = graphic.LoadBitmap(R.drawable.u1);
+				temp = GameCore.GetGraphicEngine().LoadBitmap(R.drawable.u1);
 		
 				if(temp != null)
 				{

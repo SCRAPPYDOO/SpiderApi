@@ -211,15 +211,8 @@ public class GameCore extends Activity implements OnTouchListener
 		BackgroundMenager.LoadBackground(CurrentGameState);
 		//Do everything from old state
 	
-		switch(CurrentGameState)
-		{
-			case LaunchingScreen: if(GameMechanicC != null) GameMechanicC.SetLauncherTimer(10000); break;
-
-			default:
-				break;
-		}		
-		
-		CurrentGameState = EnumGameState.LoadingScreen;
+		if(LastGameState != EnumGameState.LaunchingScreen)
+			CurrentGameState = EnumGameState.LoadingScreen;
 		
 		//If we back from game to menu
 		if(LastGameState == EnumGameState.MainMenu && NextGameState == EnumGameState.Game)
@@ -240,8 +233,8 @@ public class GameCore extends Activity implements OnTouchListener
 	
 		CurrentGameState = NextGameState;
 		
-		BackgroundMenager.LoadBackground(NextGameState);
-		ButtonMenager.CreateButtons(NextGameState);
+		BackgroundMenager.LoadBackground(CurrentGameState);
+		ButtonMenager.CreateButtons(CurrentGameState);
 		
 		Log.i("GameCore", "Switched gamestate to " + CurrentGameState + "");
 	}

@@ -22,6 +22,15 @@ public class DataMenager
 	
 	public static void OnSave()
 	{
+		String[][] KeyTable =
+		{
+			{ "SpiderPosX0", "SpiderPosY0", "SpiderFood0", "SpiderSluff0" },
+			{ "SpiderPosX1", "SpiderPosY1", "SpiderFood1", "SpiderSluff1" },
+			{ "SpiderPosX2", "SpiderPosY2", "SpiderFood2", "SpiderSluff2" },
+			{ "SpiderPosX3", "SpiderPosY3", "SpiderFood3", "SpiderSluff3" },
+			{ "SpiderPosX4", "SpiderPosY4", "SpiderFood4", "SpiderSluff4" },	
+		};
+		
 		if(AnimalMenager.GetSpider() == null || Data == null)
 			return;
 
@@ -31,6 +40,10 @@ public class DataMenager
 		Editor.putInt("X", X);
 		Editor.putInt("Y", Y);
 	
+		
+		
+		
+		
 		Editor.commit();	
 	}
 	

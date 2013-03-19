@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 
 public class Spider extends Animal
 {	
-	private int SluffLevel = 0;//wylinka ze slownika :D
+	private int SluffLevel = 1;//wylinka ze slownika :D
 	private int SluffTimer = 10000;
 
 	private Bitmap bmpAnimalBitmap = null;

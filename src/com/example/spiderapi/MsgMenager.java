@@ -4,18 +4,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class MsgMenager 
+public class MsgMenager
 {
 	//Text Settings
 	private static int TextSizeLoadingScreen = 20;
 	
 	
 	private static String stringtable[] = { null, null, null, null };
-	private static String X = "";
-	private static String Y = "";
-	private static String Z = "";
+	//private static String X = "";
+	//private static String Y = "";
+	//private static int Z = "";
 	private static int fpsnumber[] = { 0,0,0,0 };
-
+	
 	private static String LoadingInformation = "Loading ... ";
 	private static String TerrariumInformation[] = { "", "", "" };
 	private static String WormInBoxNumber = "Worm = ";
@@ -51,10 +51,14 @@ public class MsgMenager
 			
 			case InGameSpiderStat:
 			{
-				String temp1 = "Spider Health: " + Z;
-				canvas.drawText(temp1, 20, 550, paint);		
+				Animal animal = new Animal();
+				String temp1 = "Spider Health: " + animal.Health + "%";
+				canvas.drawText(temp1, 20, 525, paint);	
 				
-				String temp = "Spider Position: " + X + " : " + Y;
+				String Hungry = "Spider Hungry: " + animal.HungryTimer;
+				canvas.drawText(Hungry, 20, 550, paint);	
+				
+				String temp = "Spider Position: " + animal.GetX() + " : " + animal.GetY();
 				canvas.drawText(temp, 20, 575, paint);
 				
 				for(int i=0; i<3; ++i)
@@ -79,7 +83,7 @@ public class MsgMenager
 			
 			case MainMenuOptions:
 			{
-				canvas.drawText("W Huj Opcji", 150, 575, paint);
+				canvas.drawText("W Chuj Opcji", 150, 575, paint);
 				break;
 			}
 			

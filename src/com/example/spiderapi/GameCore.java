@@ -89,11 +89,13 @@ public class GameCore extends Activity implements OnTouchListener
 	{
 		switch(GetCurrentGameState())
 		{
+			case MainMenuOptions:
+			case MainMenuDevelopers: 
 			case Game: SetCurrentGameState(EnumGameState.MainMenu); break;
-			case LaunchingScreen:
-			case MainMenu: 
-				break;
 			
+			case LaunchingScreen: break;
+			case MainMenu: GameCore.QuitFromGame(); break;
+			 
 			default:
 				break;
 		}
@@ -205,18 +207,20 @@ public class GameCore extends Activity implements OnTouchListener
 	public static void SetCurrentGameState(EnumGameState GameState) 
 	{
 		LastGameState = CurrentGameState;
+		EnumGameState NextGameState = GameState;
+		CurrentGameState = EnumGameState.LoadingScreen;
 		CurrentGameState = GameState; 
 		//Do everything from old state
 	
 		//If we back from game to menu
 		if(LastGameState == EnumGameState.MainMenu && CurrentGameState == EnumGameState.Game)
 		{
-			CurrentGameState = EnumGameState.LoadingScreen;
 			IsGameLoading = true;
 			BackgroundMenager.LoadBackground(EnumGameState.LoadingScreen);
 			//UnloadMainMenu();
 			LoadGame();
 			IsGameLoading = false;
+			CurrentGameState = EnumGameState.Game;
 		}
 		
 		if(LastGameState == EnumGameState.Game && CurrentGameState == EnumGameState.MainMenu )
@@ -226,6 +230,12 @@ public class GameCore extends Activity implements OnTouchListener
 			UnloadGame();
 			//LoadMainMenu():
 			IsGameLoading = false;
+			
+		}
+		
+		if(CurrentGameState == EnumGameState.MainMenuDevelopers)
+		{
+
 		}
 		
 		BackgroundMenager.LoadBackground(CurrentGameState);
@@ -255,7 +265,6 @@ public class GameCore extends Activity implements OnTouchListener
 		WormBox.OnCreate();
 		Terrarium.OnCreate();
 		AnimalMenager.OnCreate();
-		CurrentGameState = EnumGameState.Game;
 	}
 
 	public static boolean GetLoadingState() { return IsGameLoading; }

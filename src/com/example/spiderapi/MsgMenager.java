@@ -68,6 +68,21 @@ public class MsgMenager
 			{
 				break;
 			}
+			
+			case MainMenuDevelopers:
+			{
+				canvas.drawText("Genik", 150, 450, paint);		
+				canvas.drawText("Brzuzek", 150, 575, paint);
+				
+				break;
+			}
+			
+			case MainMenuOptions:
+			{
+				canvas.drawText("W Huj Opcji", 150, 575, paint);
+				break;
+			}
+			
 			default: break;
 		}	
 		

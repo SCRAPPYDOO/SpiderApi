@@ -193,20 +193,19 @@ public class InterfaceButton
 						GameCore.GetGameEvent().SetTouchedWorm(null);
 					}
 					
+					//run shop
 					if(WormBox.GetWormNumber() <= 0)
 					{
 						GameCore.SetCurrentGameState(EnumGameState.InGameWormShop);
 					}
 				}
-				
-				//if robakow 0 wlacz sklepik
 				break;
 			case 303:
 				if(GameCore.GetCurrentGameState() == EnumGameState.MainMenu)
 					GameCore.SetCurrentGameState(EnumGameState.Game);		
 				break;
-			case 304: break; //launch main menu options
-			case 305: break; //tworcy :DD
+			case 304: GameCore.SetCurrentGameState(EnumGameState.MainMenuOptions); break; //launch main menu options
+			case 305: GameCore.SetCurrentGameState(EnumGameState.MainMenuDevelopers); break; //tworcy :DD
 			case 306: GameCore.QuitFromGame(); break; //Quit from game
 				
 			default: break;

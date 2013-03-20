@@ -112,7 +112,7 @@ public class GameCore extends Activity implements OnTouchListener
 	{
 		Log.i("GameCore", "OnPause");
 		
-		DataMenager.OnSave();
+		//DataMenager.OnSave();
 		wakeLock.release();	
 		IsRunning = false;
 		
@@ -229,7 +229,7 @@ public class GameCore extends Activity implements OnTouchListener
 			IsGameLoading = false;
 		}
 		
-		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.TerrariumSwitch )
+		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.MainMenu )
 		{
 			IsGameLoading = true;
 			UnloadGame();
@@ -270,10 +270,5 @@ public class GameCore extends Activity implements OnTouchListener
 	public static void QuitFromGame() 
 	{
 		IsRunning = false;
-	}
-
-	public static void LoadTerrarium(int i) 
-	{
-		CurrentTerrarium = i;
 	}	
 }

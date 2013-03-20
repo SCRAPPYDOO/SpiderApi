@@ -14,6 +14,16 @@ enum MovementFlag
 	UNIT_MOVE_MOVEDBYUSER// 0x0200
 }
 
+/*ANIMAL TYPES
+ * 0 - spider
+ * 1 - worm
+ * 
+ */
+
+/*ANIMAL KIND
+ * 0 - smiciak :D
+ */
+
 public class Animal 
 {		
 	//Graphics
@@ -30,6 +40,13 @@ public class Animal
 	//Positions
 	protected int PositionX = 50;
 	protected int PositionY = 50;
+	protected int AnimalHeight = 0;
+	protected int AnimalWidth = 0;
+	protected float fSpeed = 0.0f;
+	protected int Orientation = 0;
+	protected long OrientationTimer = 1000;
+	protected int MoveDirection = 0;
+	protected int Radius = 0;	
 	
 	public class Waypoint
 	{
@@ -40,18 +57,11 @@ public class Animal
 		Waypoint(int x, int y) { PositionX = x; PositionY = y; }	
 		Waypoint(int x, int y, int z) { PositionX = x; PositionY = y; PositionZ = z; }
 	}	
-	
 	Waypoint wayPoint = null;
 	
-	protected int AnimalHeight = 0;
-	protected int AnimalWidth = 0;
-	protected float fSpeed = 0.0f;
-	protected int Orientation = 0;
-	protected long OrientationTimer = 1000;
-	protected int MoveDirection = 0;
-	protected int Radius = 0;
 	//Social
-	protected int AnimalType = 1;
+	protected int AnimalType = 0;
+	protected int AnimalKind = 0;
 	protected int AnimalSize = 1;
 	protected int Health = 100;
 	protected int HealthTimer = 10000;
@@ -77,10 +87,11 @@ public class Animal
 	//Position Methods
 	public int GetX() { return PositionX; }
 	public int GetY() { return PositionY; }
+	public void SetPositionX(int value) { PositionX = value; }
+	public void SetPositionY(int value) { PositionY = value; }
 	public float GetW() { return AnimalWidth; }
 	public float GetH() { return AnimalHeight; }
-	public int GetType() { return AnimalType; }
-	
+
 	public void SetPosition(int posX, int posY) 
 	{ 
 		if(IsInTerrarium(posX, posY) == true)
@@ -90,8 +101,14 @@ public class Animal
 	}
 	
 	//Social Methods
+	public void SetHealth(int value) { Health = value; }
 	public int GetHealth() { return Health; }
+	public void SetHungry(int value) { Hungry = value; }
 	public int GetHungry() {return Hungry;	}
+	public void SetType(int value) { AnimalType = value; }
+	public int GetType() { return AnimalType; }
+	public void SetAnimalKind(int value) { AnimalKind = value; }
+	public int GetAnimalKind(int value) { return AnimalKind; }
 	
 	protected boolean IsInTerrarium(int posX, int posY) 
 	{
@@ -110,8 +127,7 @@ public class Animal
 	}	
 	
 	public void SetMovementFlag(int Flag) { MovementFlag = Flag; }
-
-
+	
 	public void OnAnimate(long diff)
 	{
 		if(AnimationTimer < diff)			

@@ -21,6 +21,8 @@ public class DataMenager
 		"SpiderPosY", 
 		"SpiderHealth", 
 		"SpiderSluff",
+		"WormNumber",
+		"WormNumberInTerrarium",
 	};	
 	
 	private static final int DataTypesNumber = 5;
@@ -49,6 +51,8 @@ public class DataMenager
 					case 2: tempint = ourSpider.GetY(); break;
 					case 3: tempint = ourSpider.GetHealth(); break;
 					case 4: tempint = ourSpider.GetSluffLevel(); break;
+					case 5: tempint = WormBox.GetWormNumber(); break;
+					case 6: tempint = WormMenager.GetWormsNumber(); break;
 					default: break;
 				}
 				
@@ -56,7 +60,7 @@ public class DataMenager
 			}
 		}	
 	
-		Editor.commit();	
+		Editor.commit();
 	}
 	
 	public static void OnLoad()
@@ -78,6 +82,9 @@ public class DataMenager
 					case 2: ourSpider.SetPositionY(tempint); break;
 					case 3: ourSpider.SetHealth(tempint); break;
 					case 4: ourSpider.SetSluffLevel(tempint); break;
+					case 5: WormBox.SetWormNumber(tempint); break;
+					case 6: WormMenager.SetNumberOfWormsInTerrarium(tempint); break;			
+					
 					default: break;
 				}
 			}	

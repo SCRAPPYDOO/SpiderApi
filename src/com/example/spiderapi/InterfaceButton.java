@@ -85,7 +85,7 @@ public class InterfaceButton
 			case 310:
 			case 311:	
 				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
-				nPositionY = (int) (100 + ((nButtonID - 306) * nHeight + 50 ));
+				nPositionY = (int) (100 + ((nButtonID - 306) * nHeight + (20* (nButtonID - 306)) ));
 				break;	
 				
 			default: break;
@@ -187,7 +187,7 @@ public class InterfaceButton
 			case 309: 
 			case 310: 
 			case 311: 
-				GameCore.LoadTerrarium(nButtonID - 307); GameCore.SetCurrentGameState(EnumGameState.Game); 
+				GameCore.SetTerrariumNumber(nButtonID - 307); GameCore.SetCurrentGameState(EnumGameState.Game); 
 				break;
 		
 			default: break;

@@ -61,7 +61,6 @@ public class WormMenager
 	}	
 	
 	static public int GetWormsNumber() { return WormList.size(); }
-	static public Worm GetWormOnListPosition(int i) { return WormList.get(i); }
 	
 	static public void OnUpdate(long diff)
 	{		
@@ -110,6 +109,14 @@ public class WormMenager
 		}
 		return false;
 	}	
+	
+	public static void SetNumberOfWormsInTerrarium(int value)
+	{
+		for(int i=0; i<value; ++i)
+		{
+			AddWorm(new Worm(1, 50, 50 /*RandomPositionX(), RandomPositionY()*/));
+		}
+	}
 }
 
 

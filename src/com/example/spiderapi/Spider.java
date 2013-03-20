@@ -17,6 +17,7 @@ public class Spider extends Animal
 	//Pointers
 	private Worm worm = null;	
 
+	public void SetSluffLevel(int value) { SluffLevel = value; }
 	public int GetSluffLevel() { return SluffLevel; }
 	
 	public Spider(int animalType)
@@ -70,6 +71,7 @@ public class Spider extends Animal
 		this.SetupStats();
 	}
 	
+	/*
 	private int bmpBitmapIDTable[][] = 
 	{
 		{ R.drawable.u1, R.drawable.u2, R.drawable.u3, R.drawable.u4, R.drawable.u5, R.drawable.u6, R.drawable.u7, R.drawable.u8 },
@@ -80,7 +82,8 @@ public class Spider extends Animal
 		{ R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1, R.drawable.ld1 },	
 		{ R.drawable.l1, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l5, R.drawable.l6, R.drawable.l7, R.drawable.l8 },
 		{ R.drawable.lu1, R.drawable.lu2, R.drawable.lu3, R.drawable.lu4, R.drawable.lu5, R.drawable.lu6, R.drawable.lu7, R.drawable.lu7 },	
-	};		
+	};
+	*/		
 	
 	@Override
 	public void OnDraw(Canvas canvas) 
@@ -171,7 +174,6 @@ public class Spider extends Animal
 			if(worm.IsInRange(this))
 			{
 				//WormMgr.RemoveWorm(worm); //added support in worm struct
-				Spider spider = AnimalMenager.GetSpider();
 				worm.OnDelete();
 				
 				//Health += 10 * worm.GetType();

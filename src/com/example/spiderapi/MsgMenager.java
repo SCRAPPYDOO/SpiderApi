@@ -50,26 +50,15 @@ public class MsgMenager
 			}
 			
 			case InGameSpiderStat:
-			{
-				
+			{	
 				Spider spider = AnimalMenager.GetSpider();
-												
-				String temp1 = "Spider Health: " + spider.GetHealth();
-				canvas.drawText(temp1, 20, 500, paint);	
-				
-				String Hungry = "Spider Hungry: " + spider.GetHungry();
-				canvas.drawText(Hungry, 20, 525, paint);
-				
-				if(spider != null) {
-					int Sluff = spider.GetSluffLevel();
-				    String slu = "Spider Sluff: " + Sluff;
-				    canvas.drawText(slu, 20, 550, paint);	
+				if(spider != null)
+				{
+					canvas.drawText("Spider Health: " + spider.GetHealth(), 20, 500, paint);	
+					canvas.drawText("Spider Hungry: " + spider.GetHungry(), 20, 525, paint);
+					canvas.drawText("Spider Sluff: " + spider.GetSluffLevel(), 20, 550, paint);					
+					canvas.drawText("Spider Position: " + spider.GetY() + " : " + spider.GetX(), 20, 575, paint);	
 				}
-				
-				int Y = AnimalMenager.GetSpider().GetY();
-				int X = AnimalMenager.GetSpider().GetX();
-				String temp = "Spider Position: " + Y + " : " + X;
-				canvas.drawText(temp, 20, 575, paint);
 				
 				for(int i=0; i<3; ++i)
 				{

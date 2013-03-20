@@ -32,4 +32,5 @@ public class WormBox
 	public static void DecreaseWormNumber() { --NumberOfWorm; MsgMenager.AddWormBoxInfo("" + NumberOfWorm); }
 	public static int GetWormNumber() { return NumberOfWorm; }
 	public static void AddWorm() { ++NumberOfWorm; MsgMenager.AddWormBoxInfo("" + NumberOfWorm); }
+	public static void SetWormNumber(int value) { NumberOfWorm = value; }
 }

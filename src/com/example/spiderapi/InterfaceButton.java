@@ -182,11 +182,13 @@ public class InterfaceButton
 			case 306: GameCore.QuitFromGame(); break; //Quit from game
 			
 			//Terrarium Switch Buttons
-			case 307: GameCore.LoadTerrarium(0); GameCore.SetCurrentGameState(EnumGameState.Game); break;
-			case 308: GameCore.LoadTerrarium(1); GameCore.SetCurrentGameState(EnumGameState.Game); break;
-			case 309: GameCore.LoadTerrarium(2); GameCore.SetCurrentGameState(EnumGameState.Game); break;
-			case 310: GameCore.LoadTerrarium(3); GameCore.SetCurrentGameState(EnumGameState.Game); break;
-			case 311: GameCore.LoadTerrarium(4); GameCore.SetCurrentGameState(EnumGameState.Game); break;
+			case 307:
+			case 308: 
+			case 309: 
+			case 310: 
+			case 311: 
+				GameCore.LoadTerrarium(nButtonID - 307); GameCore.SetCurrentGameState(EnumGameState.Game); 
+				break;
 		
 			default: break;
 		}	

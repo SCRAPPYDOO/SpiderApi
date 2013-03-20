@@ -54,6 +54,9 @@ public class GameCore extends Activity implements OnTouchListener
 	
 	private static boolean IsGameLoading = false;
 	
+	private static int TerrariumNumber = 0;
+	public static int GetTerrariumNumber() { return TerrariumNumber; }
+	public static void SetTerrariumNumber(int terrariumNumber) { TerrariumNumber = terrariumNumber; }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -139,7 +142,6 @@ public class GameCore extends Activity implements OnTouchListener
 	@Override
 	protected void onResume() 
 	{	
-		DataMenager.OnLoad();
 		setContentView(GraphicEngine);
 		wakeLock.acquire();
 		
@@ -245,6 +247,8 @@ public class GameCore extends Activity implements OnTouchListener
 		
 	private static void UnloadGame() 
 	{
+		DataMenager.OnSave();
+		
 		WormMenager.OnDelete();
 		WormBox.OnDelete();
 		Terrarium.OnDelete();
@@ -257,6 +261,8 @@ public class GameCore extends Activity implements OnTouchListener
 		WormBox.OnCreate();
 		Terrarium.OnCreate();
 		AnimalMenager.OnCreate();
+		
+		DataMenager.OnLoad();
 	}
 
 	public static boolean GetLoadingState() { return IsGameLoading; }

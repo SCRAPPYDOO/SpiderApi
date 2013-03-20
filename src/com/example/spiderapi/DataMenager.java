@@ -4,15 +4,26 @@ import android.content.SharedPreferences;
 
 public class DataMenager 
 {
-	private static String gameVersion = "ver 0.12";
-	public static String GetGameVersion() { return gameVersion; }
+	private static final String gameVersion = "ver 0.12";
+	public static final String GetGameVersion() { return gameVersion; }
 	
-	private static String filename = "SaveData";
+	private static final String filename = "SaveData";
 	private static SharedPreferences Data = null;	
 	
-	public static String GetDataFilename() { return filename; }
+	public static final String GetDataFilename() { return filename; }
 	
 	private static SharedPreferences.Editor Editor = null;
+	
+	private static final String[] KeyTable =
+	{
+		"SpiderType", 
+		"SpiderPosX", 
+		"SpiderPosY", 
+		"SpiderHealth", 
+		"SpiderSluff",
+	};	
+	
+	private static final int DataTypesNumber = 5;
 	
 	public static void OnCreate(SharedPreferences data)
 	{
@@ -22,39 +33,55 @@ public class DataMenager
 	
 	public static void OnSave()
 	{
-		String[][] KeyTable =
-		{
-			{ "SpiderPosX0", "SpiderPosY0", "SpiderFood0", "SpiderSluff0" },
-			{ "SpiderPosX1", "SpiderPosY1", "SpiderFood1", "SpiderSluff1" },
-			{ "SpiderPosX2", "SpiderPosY2", "SpiderFood2", "SpiderSluff2" },
-			{ "SpiderPosX3", "SpiderPosY3", "SpiderFood3", "SpiderSluff3" },
-			{ "SpiderPosX4", "SpiderPosY4", "SpiderFood4", "SpiderSluff4" },	
-		};
-		
-		if(AnimalMenager.GetSpider() == null || Data == null)
-			return;
+		if(Data == null) return;
 
-		int X = AnimalMenager.GetSpider().GetX();
-		int Y = AnimalMenager.GetSpider().GetY();
+		Spider ourSpider = AnimalMenager.GetSpider();
+		if(ourSpider != null)
+		{
+			//For Integer Saving
+			for(int i=0; i<DataTypesNumber; ++i)
+			{
+				int tempint = 0;
+				switch(i)
+				{
+					case 0: tempint = ourSpider.GetType(); break;
+					case 1: tempint = ourSpider.GetX(); break;
+					case 2: tempint = ourSpider.GetY(); break;
+					case 3: tempint = ourSpider.GetHealth(); break;
+					case 4: tempint = ourSpider.GetSluffLevel(); break;
+					default: break;
+				}
+				
+				Editor.putInt(KeyTable[i] + GameCore.GetTerrariumNumber(), tempint);
+			}
+		}	
 	
-		Editor.putInt("X", X);
-		Editor.putInt("Y", Y);
-	
-		
-		
-		
-		
 		Editor.commit();	
 	}
 	
 	public static void OnLoad()
 	{	
-		if(AnimalMenager.GetSpider() == null || Data == null)
-			return;		
+		if(Data == null) return;
 		
-		int x = Data.getInt("X", 0);
-		int y = Data.getInt("Y", 0);
-		AnimalMenager.GetSpider().SetPosition(x, y);
+		Spider ourSpider = AnimalMenager.GetSpider();
+		if(ourSpider != null)
+		{
+			//For Integer Loading
+			for(int i=0; i<DataTypesNumber; ++i)
+			{
+				int tempint = Data.getInt(KeyTable[i] + GameCore.GetTerrariumNumber(), 0);
+				
+				switch(i)
+				{
+					case 0: ourSpider.SetType(tempint); break;
+					case 1: ourSpider.SetPositionX(tempint); break;
+					case 2: ourSpider.SetPositionY(tempint); break;
+					case 3: ourSpider.SetHealth(tempint); break;
+					case 4: ourSpider.SetSluffLevel(tempint); break;
+					default: break;
+				}
+			}	
+		}
 	}
 	
 	public static void SaveTerrarium()

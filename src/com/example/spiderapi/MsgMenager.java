@@ -60,7 +60,7 @@ public class MsgMenager
 					canvas.drawText("Spider Position: " + spider.GetY() + " : " + spider.GetX(), 20, 575, paint);	
 				}
 				
-				for(int i=0; i<3; ++i)
+				for(int i=0; i<TerrariumInformation.length; ++i)
 				{
 					canvas.drawText(TerrariumInformation[i], 20, 600 + i*25, paint);
 				}

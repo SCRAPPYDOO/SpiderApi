@@ -3,7 +3,6 @@ package com.example.spiderapi;
 import java.util.ArrayList;
 import java.util.List;
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class ButtonMenager 
 {
@@ -77,14 +76,9 @@ public class ButtonMenager
 			{ 9, 311 },
 		};			
 		
-		// !! WARNING !! //
-		// Always change table size when adding buttons
-		int ButtonTableSize = 21;
-		// !! WARNING !! ??
-		
 		int state = currentGameState.ordinal();
 		
-		for(int i=0; i<ButtonTableSize; ++i)
+		for(int i=0; i<ButtonStateTable.length; ++i)
 		{
 			if(ButtonStateTable[i][0] == state)
 				new InterfaceButton(ButtonStateTable[i][1]);

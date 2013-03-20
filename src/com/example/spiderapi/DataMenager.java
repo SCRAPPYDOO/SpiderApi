@@ -24,9 +24,7 @@ public class DataMenager
 		"WormNumber",
 		"WormNumberInTerrarium",
 	};	
-	
-	private static final int DataTypesNumber = 5;
-	
+		
 	public static void OnCreate(SharedPreferences data)
 	{
 		Data = data;
@@ -41,7 +39,7 @@ public class DataMenager
 		if(ourSpider != null)
 		{
 			//For Integer Saving
-			for(int i=0; i<DataTypesNumber; ++i)
+			for(int i=0; i<KeyTable.length; ++i)
 			{
 				int tempint = 0;
 				switch(i)
@@ -71,7 +69,7 @@ public class DataMenager
 		if(ourSpider != null)
 		{
 			//For Integer Loading
-			for(int i=0; i<DataTypesNumber; ++i)
+			for(int i=0; i<KeyTable.length; ++i)
 			{
 				int tempint = Data.getInt(KeyTable[i] + GameCore.GetTerrariumNumber(), 100);
 				

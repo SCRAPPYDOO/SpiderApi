@@ -50,7 +50,6 @@ public class GameCore extends Activity implements OnTouchListener
 	
 	//Actual Gamestate
 	private static EnumGameState CurrentGameState = EnumGameState.LaunchingScreen;
-	private static int CurrentTerrarium = 0;
 	
 	private static boolean IsGameLoading = false;
 	

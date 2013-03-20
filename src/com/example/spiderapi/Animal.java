@@ -54,6 +54,8 @@ public class Animal
 	protected int AnimalType = 1;
 	protected int AnimalSize = 1;
 	protected int Health = 100;
+	protected int HealthTimer = 10000;
+	protected int Hungry = 80;
 	protected int HungryTimer = 20000; //when spider whant to eat
 	
 	public Animal() 
@@ -89,6 +91,7 @@ public class Animal
 	
 	//Social Methods
 	public int GetHealth() { return Health; }
+	public int GetHungry() {return Hungry;	}
 	
 	protected boolean IsInTerrarium(int posX, int posY) 
 	{

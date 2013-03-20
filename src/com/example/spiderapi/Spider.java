@@ -8,6 +8,7 @@ public class Spider extends Animal
 {	
 	private int SluffLevel = 1;//wylinka ze slownika :D
 	private int SluffTimer = 10000;
+	private int TimerHungry = 10000;
 
 	private Bitmap bmpAnimalBitmap = null;
 	//private Bitmap bmpAnimalBitmapT[][] = new Bitmap[8][8];
@@ -117,7 +118,7 @@ public class Spider extends Animal
 	{	
 		super.OnUpdate(diff);
 		
-		if(Health < -5)
+		if(Health < 1)
 			AnimalMenager.DeleteSpider(this);
 			
     	if(SluffTimer < diff)
@@ -127,14 +128,27 @@ public class Spider extends Animal
 	
 		this.OnEatTime(diff);
 		//Move and animations calculation Methods
-		this.OnMove(diff);		
-	}	
+		this.OnMove(diff);	
+		
+		if(Hungry > 0){
+		 if(TimerHungry < diff){
+    		Hungry--;
+    		TimerHungry = 500;
+         }
+		 TimerHungry -= diff;
+		}
+		else
+		{if(HealthTimer < diff){
+    		Health--;
+    		HealthTimer = 500;
+         }
+		HealthTimer -= diff;}}
+			
 	
 	private void SetupStats() 
 	{
 	
 	}
-	
 	
 	private void OnEatTime(long diff)
 	{
@@ -148,7 +162,7 @@ public class Spider extends Animal
 	    			wayPoint = new Waypoint(worm.GetX(), worm.GetY());
 	    		}
 
-	    		Health--;
+	    		//Health--;
 	    		HungryTimer = 20000;
 	    	}HungryTimer -= diff;
 		}
@@ -157,9 +171,11 @@ public class Spider extends Animal
 			if(worm.IsInRange(this))
 			{
 				//WormMgr.RemoveWorm(worm); //added support in worm struct
+				Spider spider = AnimalMenager.GetSpider();
 				worm.OnDelete();
 				
-				Health += 10 * worm.GetType();
+				//Health += 10 * worm.GetType();
+				Hungry += 20;
 				HungryTimer = 8000;
 				worm = null;
 			}

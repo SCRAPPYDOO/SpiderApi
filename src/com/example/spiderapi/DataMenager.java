@@ -73,7 +73,7 @@ public class DataMenager
 			//For Integer Loading
 			for(int i=0; i<DataTypesNumber; ++i)
 			{
-				int tempint = Data.getInt(KeyTable[i] + GameCore.GetTerrariumNumber(), 0);
+				int tempint = Data.getInt(KeyTable[i] + GameCore.GetTerrariumNumber(), 100);
 				
 				switch(i)
 				{

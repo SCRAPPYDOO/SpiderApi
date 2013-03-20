@@ -19,7 +19,6 @@ public class BackgroundMenager
 	private static int BitmapID[] =
 	{
 		R.drawable.hello,
-		R.drawable.menu_background_hdpi,
 	};
 
 	public static void LoadBackground()

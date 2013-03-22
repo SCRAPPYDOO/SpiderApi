@@ -28,6 +28,7 @@ enum EnumGameState
 	MainMenuOptions,		//7
 	MainMenuDevelopers,  	//8
 	TerrariumSwitch,  		//9
+	MainMenuAnimalSelection,//10
 	//Add new here
 }
 
@@ -56,6 +57,14 @@ public class GameCore extends Activity implements OnTouchListener
 	private static int TerrariumNumber = 0;
 	public static int GetTerrariumNumber() { return TerrariumNumber; }
 	public static void SetTerrariumNumber(int terrariumNumber) { TerrariumNumber = terrariumNumber; }
+	
+	//NewGame Variables
+	private static int[] SelectedAnimalNumber = { 0,0 };
+	public static void setSelectedAnimalNumber(int[] selectedAnimal) { SelectedAnimalNumber[0] = selectedAnimal[0]; SelectedAnimalNumber[1] = selectedAnimal[1]; }
+	public static int GetSelectedAnimal(int StatNumber) { return SelectedAnimalNumber[StatNumber]; }
+	//private static Animal NewAnimal = null;
+	//public static void setNewAnimal(Animal animal) { NewAnimal = animal; }
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -220,22 +229,20 @@ public class GameCore extends Activity implements OnTouchListener
 		//Do everything from old state
 	
 		//If we back from game to menu
-		if(LastGameState == EnumGameState.TerrariumSwitch && NextGameState == EnumGameState.Game)
+		IsGameLoading = true;
+		
+		if(NextGameState == EnumGameState.Game)
 		{
-			IsGameLoading = true;
-			//UnloadMainMenu();
-			LoadGame();
-			IsGameLoading = false;
+			LoadGame();	
 		}
 		
 		if(LastGameState == EnumGameState.Game && NextGameState == EnumGameState.MainMenu )
 		{
-			IsGameLoading = true;
 			UnloadGame();
-			//LoadMainMenu():
-			IsGameLoading = false;		
 		}
 	
+		IsGameLoading = false;
+		
 		CurrentGameState = NextGameState;
 		
 		BackgroundMenager.LoadBackground(CurrentGameState);
@@ -269,5 +276,5 @@ public class GameCore extends Activity implements OnTouchListener
 	public static void QuitFromGame() 
 	{
 		IsRunning = false;
-	}	
+	}
 }

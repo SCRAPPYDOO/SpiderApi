@@ -87,6 +87,11 @@ public class InterfaceButton
 				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
 				nPositionY = (int) (100 + ((nButtonID - 306) * nHeight + (20* (nButtonID - 306)) ));
 				break;	
+			
+			case 312:
+				nPositionX = (int) (ScreenWidth*0.5 - this.nWidth * 0.5);
+				nPositionY = (int) (ScreenHeight - 150);
+				break;
 				
 			default: break;
 		}
@@ -94,6 +99,9 @@ public class InterfaceButton
 
 	private void ScaleBitmap() 
 	{		
+		int Width, Height;
+		Width = Height = 100;
+		
 		switch(nButtonID)
 		{
 			case 300: 
@@ -108,11 +116,15 @@ public class InterfaceButton
 			case 309:
 			case 310:
 			case 311:
-				bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, GameCore.GetGraphicEngine().getScreenWidth()/3, GameCore.GetGraphicEngine().getScreenHeight()/15, true);
+			case 312:
+				Width = GameCore.GetGraphicEngine().getScreenWidth()/3; 
+				Height = GameCore.GetGraphicEngine().getScreenHeight()/15;
 				break;
-				
+						
 			default: break;
 		}
+		
+		bmpBitmap = Bitmap.createScaledBitmap(bmpBitmap, Width, Height, true);
 	}
 
 	public void OnDraw(Canvas canvas) 
@@ -187,9 +199,31 @@ public class InterfaceButton
 			case 309: 
 			case 310: 
 			case 311: 
-				GameCore.SetTerrariumNumber(nButtonID - 307); GameCore.SetCurrentGameState(EnumGameState.Game); 
+				GameCore.SetTerrariumNumber(nButtonID - 307);
+				
+				if(DataMenager.IsSaveEmpty(nButtonID - 307))
+				{
+					GameCore.SetCurrentGameState(EnumGameState.MainMenuAnimalSelection);
+				}
+				else
+				{
+					GameCore.SetCurrentGameState(EnumGameState.Game); 
+				}
 				break;
-		
+				
+			//Animal Selection -> StartGame	
+			case 312:
+				AnimalMenager.CreateNewSpider();
+				GameCore.SetCurrentGameState(EnumGameState.Game);
+				break;
+			//Next Animal -->
+			case 313:
+				break;
+			//Next Animal <--
+			case 314:
+				break;
+			
+				
 			default: break;
 		}	
 	}
@@ -230,6 +264,7 @@ public class InterfaceButton
 		R.drawable.terrariumswitch_terrariumbutton,
 		R.drawable.terrariumswitch_terrariumbutton,
 		R.drawable.terrariumswitch_terrariumbutton,
+		R.drawable.animalselection_select,
 		//
 	};
 }

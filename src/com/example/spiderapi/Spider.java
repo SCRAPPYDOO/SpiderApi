@@ -26,6 +26,12 @@ public class Spider extends Animal
 		OnCreate();
 	}	
 	
+	public Spider(int type, int kind) 
+	{
+		AnimalType = type;
+		AnimalKind = kind;
+		OnCreate();
+	}
 	public void OnCreate() 
 	{
 		super.OnCreate();

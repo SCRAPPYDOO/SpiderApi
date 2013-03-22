@@ -74,6 +74,8 @@ public class ButtonMenager
 			{ 9, 309 },
 			{ 9, 310 },
 			{ 9, 311 },
+			//MainMenu -> NewGame -> Animal Selection
+			{ 10, 312 }, //Select and return to terrarium selection
 		};			
 		
 		int state = currentGameState.ordinal();

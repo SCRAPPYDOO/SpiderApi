@@ -57,7 +57,9 @@ public class DataMenager
 				Editor.putInt(KeyTable[i] + GameCore.GetTerrariumNumber(), tempint);
 			}
 		}	
-	
+		
+		Editor.putBoolean("IsSaveEmpty" + GameCore.GetTerrariumNumber(), false);
+		
 		Editor.commit();
 	}
 	
@@ -65,6 +67,9 @@ public class DataMenager
 	{	
 		if(Data == null) return;
 		
+		if(IsSaveEmpty(GameCore.GetTerrariumNumber()) == true)
+			return;
+			
 		Spider ourSpider = AnimalMenager.GetSpider();
 		if(ourSpider != null)
 		{
@@ -105,5 +110,15 @@ public class DataMenager
 		
 		Terrarium.SetTerrain(Data.getInt("TerrariumTerrain", 100));
 		Terrarium.SetAvailableT(Data.getInt("TerrariumAvailableT", 0));			
+	}
+
+	public static boolean IsSaveEmpty(int SaveNumber) 
+	{
+		return Data.getBoolean("IsSaveEmpty" + SaveNumber, true);
+	}
+	
+	public static void deleteSavedGame(int SaveNumber)
+	{
+		Editor.putBoolean("IsSaveEmpty" + SaveNumber, true);
 	}
 }

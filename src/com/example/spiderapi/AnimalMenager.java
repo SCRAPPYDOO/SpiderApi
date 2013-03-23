@@ -13,8 +13,10 @@ public class AnimalMenager
 	
 	private static void LoadSpider() 
 	{
-		if(spider == null)
-			spider = new Spider(0);
+		if(DataMenager.loadSpiderData(spider) != true)
+		{
+			spider = new Spider(GameCore.GetSelectedAnimal(0),GameCore.GetSelectedAnimal(1));
+		}
 	}
 
 	static public void OnUpdate(long diff)
@@ -43,13 +45,5 @@ public class AnimalMenager
 			spider.OnDelete();
 			spider = null;
 		}
-	}
-
-	public static void CreateNewSpider() 
-	{
-		int Type = GameCore.GetSelectedAnimal(0);
-		int Kind = GameCore.GetSelectedAnimal(1);
-		spider = new Spider(Type, Kind);
-		// TODO Auto-generated method stub		
 	}
 }

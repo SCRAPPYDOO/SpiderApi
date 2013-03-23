@@ -213,8 +213,8 @@ public class InterfaceButton
 				
 			//Animal Selection -> StartGame	
 			case 312:
-				AnimalMenager.CreateNewSpider();
-				GameCore.SetCurrentGameState(EnumGameState.Game);
+				//AnimalMenager.CreateNewSpider();
+				GameCore.SetCurrentGameState(EnumGameState.Game); //This button need to change state to terrarium choose state
 				break;
 			//Next Animal -->
 			case 313:

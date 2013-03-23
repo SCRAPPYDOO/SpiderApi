@@ -2,14 +2,14 @@ package com.example.spiderapi;
 
 public class WormBox 
 {
-	private static int NumberOfWorm = 5;
+	private static int NumberOfWorm = 0;
 			
 	public static void OnCreate()
 	{	
 		MsgMenager.AddLoadingInfo(0, "Loading WormBox");
-
-		//if gra zapisana zaladuj liczbe robakow
 		MsgMenager.AddWormBoxInfo("" + NumberOfWorm);
+		
+		NumberOfWorm = 3;
 	}
 
 	public static void OnDelete() 

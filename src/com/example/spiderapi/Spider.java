@@ -19,19 +19,14 @@ public class Spider extends Animal
 
 	public void SetSluffLevel(int value) { SluffLevel = value; }
 	public int GetSluffLevel() { return SluffLevel; }
-	
-	public Spider(int animalType)
-	{
-		AnimalType = animalType;
-		OnCreate();
-	}	
-	
+		
 	public Spider(int type, int kind) 
 	{
 		AnimalType = type;
 		AnimalKind = kind;
 		OnCreate();
 	}
+	
 	public void OnCreate() 
 	{
 		super.OnCreate();

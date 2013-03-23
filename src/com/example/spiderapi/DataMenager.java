@@ -117,8 +117,23 @@ public class DataMenager
 		return Data.getBoolean("IsSaveEmpty" + SaveNumber, true);
 	}
 	
+	public static boolean IsSaveEmpty() 
+	{
+		return Data.getBoolean("IsSaveEmpty" + GameCore.GetTerrariumNumber(), true);
+	}
+	
 	public static void deleteSavedGame(int SaveNumber)
 	{
 		Editor.putBoolean("IsSaveEmpty" + SaveNumber, true);
+	}
+
+	public static boolean loadSpiderData(Spider spider) 
+	{
+		if(IsSaveEmpty() == true)
+			return true;
+
+
+		
+		return false;
 	}
 }

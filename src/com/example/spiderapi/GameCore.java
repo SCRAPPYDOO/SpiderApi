@@ -231,7 +231,7 @@ public class GameCore extends Activity implements OnTouchListener
 		//If we back from game to menu
 		IsGameLoading = true;
 		
-		if(NextGameState == EnumGameState.Game)
+		if(LastGameState == EnumGameState.TerrariumSwitch && NextGameState == EnumGameState.Game)
 		{
 			LoadGame();	
 		}
